@@ -113,6 +113,8 @@ namespace GestioneOrganismi.Backend.Models
         // Navigation Properties
         [ForeignKey(nameof(EntitaAziendaleId))]
         public virtual EntitaAziendale? EntitaAziendale { get; set; }
+
+        public virtual ICollection<PersonaIndirizzo> PersonaIndirizzi { get; set; } = new List<PersonaIndirizzo>();
     }
 
     /// <summary>
@@ -181,7 +183,7 @@ namespace GestioneOrganismi.Backend.Models
     }
 
     /// <summary>
-    /// Entità Indirizzo per Persona
+    /// Entità Relazione Persona-Indirizzo
     /// </summary>
     [Table("PersonaIndirizzo", Schema = "Persone")]
     public class PersonaIndirizzo
@@ -235,5 +237,15 @@ namespace GestioneOrganismi.Backend.Models
 
         [NotMapped]
         public bool IsDeleted => DataCancellazione.HasValue;
+
+        // Navigation Properties
+        [ForeignKey(nameof(PersonaId))]
+        public virtual Persona? Persona { get; set; }
+
+        [ForeignKey(nameof(IndirizzoId))]
+        public virtual Indirizzo? Indirizzo { get; set; }
+
+        [ForeignKey(nameof(TipoIndirizzoId))]
+        public virtual TipoIndirizzo? TipoIndirizzo { get; set; }
     }
 }

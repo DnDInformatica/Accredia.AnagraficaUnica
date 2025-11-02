@@ -42,6 +42,13 @@ namespace GestioneOrganismi.Backend.Models
         
         [NotMapped]
         public bool IsDeleted => DataCancellazione.HasValue;
+
+        // Navigation Properties
+        [ForeignKey(nameof(RepartoId))]
+        public virtual Reparto? Reparto { get; set; }
+
+        [ForeignKey(nameof(TurnoId))]
+        public virtual Turno? Turno { get; set; }
     }
 
     [Table("Dipartimento", Schema = "RisorseUmane")]
@@ -49,9 +56,12 @@ namespace GestioneOrganismi.Backend.Models
     {
         [Key]
         public int DipartimentoId { get; set; }
+        
         [Required, StringLength(200)]
         public required string Nome { get; set; }
-        public int? RepartoId { get; set; }
+        
+        public int? DipartimentoPadreId { get; set; }
+        
         public Guid UniqueRowId { get; set; } = Guid.NewGuid();
         public DateTime DataCreazione { get; set; } = DateTime.UtcNow;
         public int? CreatoDa { get; set; }
@@ -61,6 +71,12 @@ namespace GestioneOrganismi.Backend.Models
         public int? CancellatoDa { get; set; }
         public DateTime DataInizioValidita { get; set; } = DateTime.UtcNow;
         public DateTime DataFineValidita { get; set; } = DateTime.MaxValue;
+
+        [NotMapped]
+        public bool IsDeleted => DataCancellazione.HasValue;
+
+        // Navigation Properties
+        public virtual ICollection<Reparto> Reparti { get; set; } = new List<Reparto>();
     }
 
     [Table("Reparto", Schema = "RisorseUmane")]
@@ -68,9 +84,13 @@ namespace GestioneOrganismi.Backend.Models
     {
         [Key]
         public int RepartoId { get; set; }
+        
         [Required, StringLength(100)]
         public required string Nome { get; set; }
+        
+        public int? DipartimentoId { get; set; }
         public int? ManagerDipendenteId { get; set; }
+        
         public Guid UniqueRowId { get; set; } = Guid.NewGuid();
         public DateTime DataCreazione { get; set; } = DateTime.UtcNow;
         public int? CreatoDa { get; set; }
@@ -80,6 +100,18 @@ namespace GestioneOrganismi.Backend.Models
         public int? CancellatoDa { get; set; }
         public DateTime DataInizioValidita { get; set; } = DateTime.UtcNow;
         public DateTime DataFineValidita { get; set; } = DateTime.MaxValue;
+
+        [NotMapped]
+        public bool IsDeleted => DataCancellazione.HasValue;
+
+        // Navigation Properties
+        [ForeignKey(nameof(DipartimentoId))]
+        public virtual Dipartimento? Dipartimento { get; set; }
+
+        [ForeignKey(nameof(ManagerDipendenteId))]
+        public virtual Dipendente? Manager { get; set; }
+
+        public virtual ICollection<Dipendente> Dipendenti { get; set; } = new List<Dipendente>();
     }
 
     [Table("Turno", Schema = "RisorseUmane")]
@@ -87,12 +119,16 @@ namespace GestioneOrganismi.Backend.Models
     {
         [Key]
         public int TurnoId { get; set; }
+        
         [Required, StringLength(100)]
         public required string Descrizione { get; set; }
+        
         [Required]
         public TimeSpan OraInizio { get; set; }
+        
         [Required]
         public TimeSpan OraFine { get; set; }
+        
         public Guid UniqueRowId { get; set; } = Guid.NewGuid();
         public DateTime DataCreazione { get; set; } = DateTime.UtcNow;
         public int? CreatoDa { get; set; }
@@ -102,5 +138,14 @@ namespace GestioneOrganismi.Backend.Models
         public int? CancellatoDa { get; set; }
         public DateTime DataInizioValidita { get; set; } = DateTime.UtcNow;
         public DateTime DataFineValidita { get; set; } = DateTime.MaxValue;
+
+        [NotMapped]
+        public bool IsDeleted => DataCancellazione.HasValue;
+
+        [NotMapped]
+        public TimeSpan Durata => OraFine - OraInizio;
+
+        // Navigation Properties
+        public virtual ICollection<Dipendente> Dipendenti { get; set; } = new List<Dipendente>();
     }
 }

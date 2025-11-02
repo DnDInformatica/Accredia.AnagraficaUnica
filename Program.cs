@@ -3,6 +3,8 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using GestioneOrganismi.Backend.Data;
 using GestioneOrganismi.Backend.Validators;
+using GestioneOrganismi.Backend.Config;
+using GestioneOrganismi.Backend.Services;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,20 @@ builder.Services.AddDbContext<PersoneDbContext>(options =>
         sqlOptions => sqlOptions.EnableRetryOnFailure()
     )
 );
+
+// Configurazione DocumentStorage
+builder.Services.Configure<DocumentStorageConfig>(
+    builder.Configuration.GetSection("DocumentStorage")
+);
+
+// HttpClientFactory per Nextcloud
+builder.Services.AddHttpClient("Nextcloud", client =>
+{
+    client.Timeout = TimeSpan.FromMinutes(10); // Timeout per file grandi
+});
+
+// Document Storage Service
+builder.Services.AddScoped<IDocumentStorageService, DocumentStorageService>();
 
 // Carter for Minimal APIs
 builder.Services.AddCarter();
@@ -31,11 +47,11 @@ builder.Services.AddSwaggerGen(options =>
     {
         Title = "Gestione Organismi API",
         Version = "v1",
-        Description = "API per la gestione di Email, Telefoni e altre entità"
+        Description = "API per la gestione completa di Enti, Organismi, Documenti, Email, Telefoni e Risorse Umane"
     });
 });
 
-// CORS (se necessario)
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -47,7 +63,6 @@ builder.Services.AddCors(options =>
 });
 
 // Authentication & Authorization (se configurato)
-
 
 var app = builder.Build();
 
