@@ -1,11 +1,11 @@
 using Carter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.Responses;
-using GestioneOrganismi.Backend.Services;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.Responses;
+using Accredia.GestioneAnagrafica.API.Services;
 
-namespace GestioneOrganismi.Backend.Endpoints.Documenti;
+namespace Accredia.GestioneAnagrafica.API.Endpoints.Documenti;
 
 public class DownloadDocumentoEndpoint : ICarterModule
 {

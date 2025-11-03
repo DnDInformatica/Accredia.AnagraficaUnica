@@ -25,7 +25,7 @@ Backend API RESTful sviluppato in .NET 9 per la gestione completa di:
 ## 📦 Struttura Progetto
 
 ```
-GestioneOrganismi.Backend/
+Accredia.GestioneAnagrafica.API/
 ├── Config/              # Configurazioni (JWT, ecc.)
 ├── Data/                # DbContext e Migrations
 ├── DTOs/                # Data Transfer Objects

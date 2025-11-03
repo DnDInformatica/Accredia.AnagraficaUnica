@@ -2,12 +2,12 @@ using Carter;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.Models;
-using GestioneOrganismi.Backend.DTOs;
-using GestioneOrganismi.Backend.Responses;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.Models;
+using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.API.Responses;
 
-namespace GestioneOrganismi.Backend.Endpoints.Email;
+namespace Accredia.GestioneAnagrafica.API.Endpoints.Email;
 
 public class CreateEmailEndpoint : ICarterModule
 {
@@ -62,7 +62,7 @@ public class CreateEmailEndpoint : ICarterModule
                 });
             }
 
-            var email = new GestioneOrganismi.Backend.Models.Email
+            var email = new Accredia.GestioneAnagrafica.API.Models.Email
             {
                 EntitaAziendaleId = request.EntitaAziendaleId,
                 TipoEmailId = request.TipoEmailId,

@@ -2,11 +2,11 @@ using Carter;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.DTOs;
-using GestioneOrganismi.Backend.Responses;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.API.Responses;
 
-namespace GestioneOrganismi.Backend.Endpoints.OrganismiAccreditati;
+namespace Accredia.GestioneAnagrafica.API.Endpoints.OrganismiAccreditati;
 
 public class UpdateOrganismoAccreditatoEndpoint : ICarterModule
 {
@@ -25,7 +25,7 @@ public class UpdateOrganismoAccreditatoEndpoint : ICarterModule
             }
 
             var organismo = await context.OrganismiAccreditati
-                .FirstOrDefaultAsync(o => o.EntitaAziendaleId == id && !o.IsDeleted);
+                .FirstOrDefaultAsync(o => o.EntitaAziendaleId == id);
 
             if (organismo == null)
             {
@@ -41,8 +41,7 @@ public class UpdateOrganismoAccreditatoEndpoint : ICarterModule
             {
                 var existingByPIva = await context.OrganismiAccreditati
                     .FirstOrDefaultAsync(o => o.PartitaIVA == request.PartitaIVA && 
-                                              o.EntitaAziendaleId != id && 
-                                              !o.IsDeleted);
+                                              o.EntitaAziendaleId != id);
 
                 if (existingByPIva != null)
                 {
@@ -58,8 +57,7 @@ public class UpdateOrganismoAccreditatoEndpoint : ICarterModule
             {
                 var existingByCF = await context.OrganismiAccreditati
                     .FirstOrDefaultAsync(o => o.CodiceFiscale == request.CodiceFiscale && 
-                                              o.EntitaAziendaleId != id && 
-                                              !o.IsDeleted);
+                                              o.EntitaAziendaleId != id);
 
                 if (existingByCF != null)
                 {
@@ -90,11 +88,17 @@ public class UpdateOrganismoAccreditatoEndpoint : ICarterModule
                 TipoOrganismoId = organismo.TipoOrganismoId,
                 EnteAccreditamentoId = organismo.EnteAccreditamentoId,
                 DataCreazione = organismo.DataCreazione,
-                DataModifica = organismo.DataModifica,
-                IsDeleted = organismo.IsDeleted
+                DataModifica = organismo.DataModifica
             };
 
             return Results.Ok(ApiResponse<OrganismoAccreditatoDTO.Response>.SuccessResponse(response));
-        }).RequireAuthorization();
+        })
+            .WithTags("OrganismiAccreditati")
+            .WithName("UpdateOrganismoAccreditato")
+            .Produces<OrganismoAccreditatoDTO.Response>(StatusCodes.Status200OK)
+            .Produces<ApiResponse>(StatusCodes.Status404NotFound)
+            .Produces<ApiResponse>(StatusCodes.Status400BadRequest)
+            .Produces<ApiResponse>(StatusCodes.Status422UnprocessableEntity)
+            .RequireAuthorization();
     }
 }

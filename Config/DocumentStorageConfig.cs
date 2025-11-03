@@ -1,4 +1,4 @@
-namespace GestioneOrganismi.Backend.Config;
+namespace Accredia.GestioneAnagrafica.API.Config;
 
 /// <summary>
 /// Configurazione per lo storage dei documenti

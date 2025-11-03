@@ -5,7 +5,7 @@
 ### 1. Imposta il startup project
 ```powershell
 # In Visual Studio - Package Manager Console
-# Assicurati di avere selezionato "GestioneOrganismi.Backend" come startup project
+# Assicurati di avere selezionato "Accredia.GestioneAnagrafica.API" come startup project
 ```
 
 ### 2. Crea la prima migration
@@ -122,7 +122,7 @@ dotnet ef migrations remove --context PersoneDbContext
 
 ### "The term 'Add-Migration' is not recognized"
 - Assicurati di avere Package Manager Console aperto (Tools > NuGet Package Manager > Package Manager Console)
-- Verifica che GestioneOrganismi.Backend sia il progetto predefinito
+- Verifica che Accredia.GestioneAnagrafica.API sia il progetto predefinito
 
 ### "No database provider has been configured"
 - Verifica che PersoneDbContextFactory sia implementato correttamente

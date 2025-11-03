@@ -1,11 +1,11 @@
 using Carter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.DTOs;
-using GestioneOrganismi.Backend.Responses;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.API.Responses;
 
-namespace GestioneOrganismi.Backend.Endpoints.OrganismiAccreditati;
+namespace Accredia.GestioneAnagrafica.API.Endpoints.OrganismiAccreditati;
 
 public class GetOrganismiAccreditatiEndpoint : ICarterModule
 {
@@ -21,7 +21,7 @@ public class GetOrganismiAccreditatiEndpoint : ICarterModule
         {
             var query = context.OrganismiAccreditati
                 .Include(o => o.EnteAccreditamento)
-                .Where(o => !o.IsDeleted);
+                .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -48,7 +48,7 @@ public class GetOrganismiAccreditatiEndpoint : ICarterModule
                     RagioneSociale = o.RagioneSociale,
                     PartitaIVA = o.PartitaIVA,
                     CodiceFiscale = o.CodiceFiscale,
-                    NomeEnteAccreditamento = o.EnteAccreditamento != null ? o.EnteAccreditamento.Nome : null,
+                    NomeEnteAccreditamento = o.EnteAccreditamento != null ? o.EnteAccreditamento.Denominazione : null,
                     DataCreazione = o.DataCreazione
                 })
                 .ToListAsync();
@@ -62,7 +62,12 @@ public class GetOrganismiAccreditatiEndpoint : ICarterModule
             };
 
             return Results.Ok(ApiResponse<PageResult<OrganismoAccreditatoDTO.List>>.SuccessResponse(pageResult));
-        }).RequireAuthorization();
+        })
+            .WithTags("OrganismiAccreditati")
+            .WithName("GetOrganismiAccreditati")
+            .WithOpenApi()
+            .Produces(StatusCodes.Status200OK)
+            .RequireAuthorization();
 
         // Get by ID
         app.MapGet("/api/organismi-accreditati/{id}", async (
@@ -71,7 +76,7 @@ public class GetOrganismiAccreditatiEndpoint : ICarterModule
         {
             var organismo = await context.OrganismiAccreditati
                 .Include(o => o.EnteAccreditamento)
-                .FirstOrDefaultAsync(o => o.EntitaAziendaleId == id && !o.IsDeleted);
+                .FirstOrDefaultAsync(o => o.EntitaAziendaleId == id);
 
             if (organismo == null)
             {
@@ -90,13 +95,18 @@ public class GetOrganismiAccreditatiEndpoint : ICarterModule
                 CodiceFiscale = organismo.CodiceFiscale,
                 TipoOrganismoId = organismo.TipoOrganismoId,
                 EnteAccreditamentoId = organismo.EnteAccreditamentoId,
-                NomeEnteAccreditamento = organismo.EnteAccreditamento?.Nome,
+                NomeEnteAccreditamento = organismo.EnteAccreditamento?.Denominazione,
                 DataCreazione = organismo.DataCreazione,
-                DataModifica = organismo.DataModifica,
-                IsDeleted = organismo.IsDeleted
+                DataModifica = organismo.DataModifica
             };
 
             return Results.Ok(ApiResponse<OrganismoAccreditatoDTO.Response>.SuccessResponse(response));
-        }).RequireAuthorization();
+        })
+            .WithTags("OrganismiAccreditati")
+            .WithName("GetOrganismoAccreditatoById")
+            .WithOpenApi()
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .RequireAuthorization();
     }
 }

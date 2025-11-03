@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GestioneOrganismi.Backend.Models
+namespace Accredia.GestioneAnagrafica.API.Models
 {
     [Table("Dipendente", Schema = "RisorseUmane")]
     public class Dipendente
@@ -76,7 +76,11 @@ namespace GestioneOrganismi.Backend.Models
         public bool IsDeleted => DataCancellazione.HasValue;
 
         // Navigation Properties
+        [ForeignKey(nameof(DipartimentoPadreId))]
+        public virtual Dipartimento? DipartimentoPadre { get; set; }
+        
         public virtual ICollection<Reparto> Reparti { get; set; } = new List<Reparto>();
+        public virtual ICollection<Dipartimento> DipartimentiFiliali { get; set; } = new List<Dipartimento>();
     }
 
     [Table("Reparto", Schema = "RisorseUmane")]

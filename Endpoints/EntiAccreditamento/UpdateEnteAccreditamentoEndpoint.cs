@@ -2,12 +2,12 @@ using Carter;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.Models;
-using GestioneOrganismi.Backend.DTOs;
-using GestioneOrganismi.Backend.Responses;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.API.Responses;
+using AutoMapper;
 
-namespace GestioneOrganismi.Backend.Endpoints.EntiAccreditamento;
+namespace Accredia.GestioneAnagrafica.API.Endpoints.EntiAccreditamento;
 
 public class UpdateEnteAccreditamentoEndpoint : ICarterModule
 {
@@ -17,6 +17,7 @@ public class UpdateEnteAccreditamentoEndpoint : ICarterModule
             [FromRoute] int id,
             [FromBody] EnteAccreditamentoDTO.Update request,
             [FromServices] PersoneDbContext context,
+            [FromServices] IMapper mapper,
             [FromServices] IValidator<EnteAccreditamentoDTO.Update> validator) =>
         {
             var validationResult = await validator.ValidateAsync(request);
@@ -26,7 +27,7 @@ public class UpdateEnteAccreditamentoEndpoint : ICarterModule
             }
 
             var enteAccreditamento = await context.EntiAccreditamento
-                .FirstOrDefaultAsync(e => e.Id == id);
+                .FirstOrDefaultAsync(e => e.EntitaAziendaleId == id);
 
             if (enteAccreditamento == null)
             {
@@ -37,47 +38,25 @@ public class UpdateEnteAccreditamentoEndpoint : ICarterModule
                 });
             }
 
-            // Check for duplicate code if changed
-            if (enteAccreditamento.CodiceIdentificativo != request.Codice)
-            {
-                var existingEnte = await context.EntiAccreditamento
-                    .FirstOrDefaultAsync(e => e.CodiceIdentificativo == request.Codice && !e.IsDeleted);
-
-                if (existingEnte != null)
-                {
-                    return Results.BadRequest(new ApiResponse
-                    {
-                        Success = false,
-                        Message = "Un Ente Accreditamento con questo codice esiste già."
-                    });
-                }
-            }
-
             // Update properties
-            enteAccreditamento.Nome = request.Nome;
-            enteAccreditamento.CodiceIdentificativo = request.Codice;
-            enteAccreditamento.Descrizione = request.Descrizione;
-            enteAccreditamento.SettoreMerceologico = request.SettoreMerceologico;
-            enteAccreditamento.DataAccreditamento = request.DataAccreditamento;
-            enteAccreditamento.Stato = (EnteAccreditamento.StatoAccreditamento)request.Stato;
-            enteAccreditamento.UpdatedAt = DateTime.UtcNow;
+            enteAccreditamento.Denominazione = request.Denominazione;
+            enteAccreditamento.Sigla = request.Sigla;
+            enteAccreditamento.Note = request.Note;
+            enteAccreditamento.DataFondazione = request.DataFondazione;
+            enteAccreditamento.DataModifica = DateTime.UtcNow;
 
             await context.SaveChangesAsync();
 
-            var response = new EnteAccreditamentoDTO.Response
-            {
-                Id = enteAccreditamento.Id,
-                Nome = enteAccreditamento.Nome,
-                Codice = enteAccreditamento.CodiceIdentificativo,
-                Descrizione = enteAccreditamento.Descrizione,
-                SettoreMerceologico = enteAccreditamento.SettoreMerceologico,
-                DataAccreditamento = enteAccreditamento.DataAccreditamento,
-                Stato = enteAccreditamento.Stato.ToString(),
-                DataCreazione = enteAccreditamento.CreatedAt,
-                DataUltimaModifica = enteAccreditamento.UpdatedAt
-            };
+            var responseDto = mapper.Map<EnteAccreditamentoDTO.Response>(enteAccreditamento);
 
-            return Results.Ok(response);
-        }).RequireAuthorization();
+            return Results.Ok(responseDto);
+        })
+            .WithTags("EntiAccreditamento")
+            .WithName("UpdateEnteAccreditamento")
+            .Produces<EnteAccreditamentoDTO.Response>(StatusCodes.Status200OK)
+            .Produces<ApiResponse>(StatusCodes.Status404NotFound)
+            .Produces<ApiResponse>(StatusCodes.Status400BadRequest)
+            .Produces<ApiResponse>(StatusCodes.Status422UnprocessableEntity)
+            .RequireAuthorization();
     }
 }

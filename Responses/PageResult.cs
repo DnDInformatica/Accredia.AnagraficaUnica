@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace GestioneOrganismi.Backend.Responses
+namespace Accredia.GestioneAnagrafica.API.Responses
 {
     /// <summary>
     /// Risultato paginato standardizzato

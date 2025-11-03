@@ -111,7 +111,7 @@
 ## 📊 STRUTTURA PROGETTO
 
 ```
-GestioneOrganismi.Backend/
+Accredia.GestioneAnagrafica.API/
 ├── Config/
 │   ├── DocumentStorageConfig.cs     ✅ NUOVO
 │   └── JwtConfig.cs                  ✅ ESISTENTE

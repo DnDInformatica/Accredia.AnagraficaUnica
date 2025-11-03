@@ -1,7 +1,7 @@
 using FluentValidation;
-using GestioneOrganismi.Backend.DTOs;
+using Accredia.GestioneAnagrafica.API.DTOs;
 
-namespace GestioneOrganismi.Backend.Validators
+namespace Accredia.GestioneAnagrafica.API.Validators
 {
     /// <summary>
     /// Validator per la creazione di un Organismo Accreditato

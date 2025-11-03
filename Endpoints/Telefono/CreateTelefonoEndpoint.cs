@@ -2,12 +2,12 @@ using Carter;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.Models;
-using GestioneOrganismi.Backend.DTOs;
-using GestioneOrganismi.Backend.Responses;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.Models;
+using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.API.Responses;
 
-namespace GestioneOrganismi.Backend.Endpoints.Telefono;
+namespace Accredia.GestioneAnagrafica.API.Endpoints.Telefono;
 
 public class CreateTelefonoEndpoint : ICarterModule
 {
@@ -48,7 +48,7 @@ public class CreateTelefonoEndpoint : ICarterModule
                 });
             }
 
-            var telefono = new GestioneOrganismi.Backend.Models.Telefono
+            var telefono = new Accredia.GestioneAnagrafica.API.Models.Telefono
             {
                 EntitaAziendaleId = request.EntitaAziendaleId,
                 TipoTelefonoId = request.TipoTelefonoId,

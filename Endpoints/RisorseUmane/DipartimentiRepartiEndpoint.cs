@@ -2,12 +2,12 @@ using Carter;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.DTOs;
-using GestioneOrganismi.Backend.Models;
-using GestioneOrganismi.Backend.Responses;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.API.Models;
+using Accredia.GestioneAnagrafica.API.Responses;
 
-namespace GestioneOrganismi.Backend.Endpoints.RisorseUmane;
+namespace Accredia.GestioneAnagrafica.API.Endpoints.RisorseUmane;
 
 public class DipartimentiRepartiEndpoint : ICarterModule
 {

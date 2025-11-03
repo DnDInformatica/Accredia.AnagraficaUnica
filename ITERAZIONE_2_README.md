@@ -5,7 +5,7 @@
 ### 📁 Struttura Cartelle Creata
 
 ```
-GestioneOrganismi.Backend/
+Accredia.GestioneAnagrafica.API/
 ├── Responses/
 │   ├── ApiResponse.cs          # Wrapper standard per API responses
 │   └── PageResult.cs           # Paginazione standardizzata
@@ -32,7 +32,7 @@ GestioneOrganismi.Backend/
 ├── Services/                   (da creare in ITERAZIONE 3)
 ├── Program.cs                  (da creare in ITERAZIONE 3)
 ├── appsettings.json            # Configurazione app
-└── GestioneOrganismi.Backend.csproj
+└── Accredia.GestioneAnagrafica.API.csproj
 ```
 
 ### 🎯 File Creati
@@ -96,7 +96,7 @@ GestioneOrganismi.Backend/
 - ✅ API settings (versione, page size)
 - ✅ Logging configuration
 
-#### 9. **GestioneOrganismi.Backend.csproj**
+#### 9. **Accredia.GestioneAnagrafica.API.csproj**
 - ✅ Target .NET 9.0
 - ✅ Package EF Core (SqlServer + PostgreSQL)
 - ✅ Identity & Authentication
@@ -109,7 +109,7 @@ GestioneOrganismi.Backend/
 
 ### 1. Crea il progetto
 ```bash
-dotnet new web -n GestioneOrganismi.Backend
+dotnet new web -n Accredia.GestioneAnagrafica.API
 ```
 
 ### 2. Installa NuGet packages

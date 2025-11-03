@@ -1,4 +1,4 @@
-namespace GestioneOrganismi.Backend.DTOs;
+namespace Accredia.GestioneAnagrafica.API.DTOs;
 
 /// <summary>
 /// DTO per Ente Accreditamento con classi nested
@@ -10,11 +10,11 @@ public static class EnteAccreditamentoDTO
     /// </summary>
     public class Create
     {
-        public string Nome { get; set; } = string.Empty;
-        public string Codice { get; set; } = string.Empty;
-        public string? Descrizione { get; set; }
-        public string? SettoreMerceologico { get; set; }
-        public DateTime DataAccreditamento { get; set; }
+        public int EntitaAziendaleId { get; set; }
+        public string Denominazione { get; set; } = string.Empty;
+        public string? Sigla { get; set; }
+        public string? Note { get; set; }
+        public DateTime? DataFondazione { get; set; }
     }
 
     /// <summary>
@@ -22,12 +22,10 @@ public static class EnteAccreditamentoDTO
     /// </summary>
     public class Update
     {
-        public string Nome { get; set; } = string.Empty;
-        public string Codice { get; set; } = string.Empty;
-        public string? Descrizione { get; set; }
-        public string? SettoreMerceologico { get; set; }
-        public DateTime DataAccreditamento { get; set; }
-        public int Stato { get; set; }
+        public string Denominazione { get; set; } = string.Empty;
+        public string? Sigla { get; set; }
+        public string? Note { get; set; }
+        public DateTime? DataFondazione { get; set; }
     }
 
     /// <summary>
@@ -36,13 +34,15 @@ public static class EnteAccreditamentoDTO
     public class Response
     {
         public int Id { get; set; }
-        public string Nome { get; set; } = string.Empty;
-        public string Codice { get; set; } = string.Empty;
-        public string? Descrizione { get; set; }
-        public string? SettoreMerceologico { get; set; }
-        public DateTime DataAccreditamento { get; set; }
-        public string Stato { get; set; } = string.Empty;
+        public int EntitaAziendaleId { get; set; }
+        public string Denominazione { get; set; } = string.Empty;
+        public string? Sigla { get; set; }
+        public string? Note { get; set; }
+        public DateTime? DataFondazione { get; set; }
         public DateTime DataCreazione { get; set; }
-        public DateTime? DataUltimaModifica { get; set; }
+        public DateTime? DataModifica { get; set; }
+        public Guid UniqueRowId { get; set; }
+        public DateTime DataInizioValidita { get; set; }
+        public DateTime DataFineValidita { get; set; }
     }
 }

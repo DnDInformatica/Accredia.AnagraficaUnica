@@ -1,7 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace GestioneOrganismi.Backend.Validators
+namespace Accredia.GestioneAnagrafica.API.Validators
 {
     /// <summary>
     /// Validatore per Codice Fiscale italiano ed estero

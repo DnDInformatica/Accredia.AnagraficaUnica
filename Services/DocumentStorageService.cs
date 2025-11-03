@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Options;
-using GestioneOrganismi.Backend.Config;
+using Accredia.GestioneAnagrafica.API.Config;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace GestioneOrganismi.Backend.Services;
+namespace Accredia.GestioneAnagrafica.API.Services;
 
 /// <summary>
 /// Servizio per la gestione dello storage documenti con supporto Nextcloud WebDAV

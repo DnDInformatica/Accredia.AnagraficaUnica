@@ -2,10 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using GestioneOrganismi.Backend.Models;
+using Accredia.GestioneAnagrafica.API.Models;
 using System;
 
-namespace GestioneOrganismi.Backend.Data
+namespace Accredia.GestioneAnagrafica.API.Data
 {
     /// <summary>
     /// DbContext segmentato per il Bounded Context "Persone"
@@ -51,6 +51,7 @@ namespace GestioneOrganismi.Backend.Data
             // Persona Configuration
             modelBuilder.Entity<Persona>(entity =>
             {
+                entity.ToTable("Persona", schema: "Persone");
                 entity.HasKey(e => e.PersonaId);
 
                 entity.Property(e => e.Nome)
@@ -96,6 +97,7 @@ namespace GestioneOrganismi.Backend.Data
             // EntitaAziendale Configuration
             modelBuilder.Entity<EntitaAziendale>(entity =>
             {
+                entity.ToTable("EntitaAziendale", schema: "Persone");
                 entity.HasKey(e => e.EntitaAziendaleId);
 
                 entity.Property(e => e.Denominazione)
@@ -126,6 +128,7 @@ namespace GestioneOrganismi.Backend.Data
             // Email Configuration
             modelBuilder.Entity<Email>(entity =>
             {
+                entity.ToTable("Email", schema: "Persone");
                 entity.HasKey(e => e.EmailId);
 
                 entity.Property(e => e.EmailAddress)
@@ -171,6 +174,7 @@ namespace GestioneOrganismi.Backend.Data
             // Telefono Configuration
             modelBuilder.Entity<Telefono>(entity =>
             {
+                entity.ToTable("Telefono", schema: "Persone");
                 entity.HasKey(e => e.TelefonoId);
 
                 entity.Property(e => e.Numero)
@@ -221,6 +225,7 @@ namespace GestioneOrganismi.Backend.Data
             // PersonaIndirizzo Configuration
             modelBuilder.Entity<PersonaIndirizzo>(entity =>
             {
+                entity.ToTable("PersonaIndirizzo", schema: "Persone");
                 entity.HasKey(e => e.PersonaIndirizzoId);
 
                 entity.Property(e => e.DataCreazione)
@@ -238,6 +243,7 @@ namespace GestioneOrganismi.Backend.Data
             // AmbitoApplicazione Configuration
             modelBuilder.Entity<AmbitoApplicazione>(entity =>
             {
+                entity.ToTable("AmbitoApplicazione", schema: "Accreditamento");
                 entity.HasKey(e => e.AmbitoApplicazioneId);
 
                 entity.Property(e => e.Codice)
@@ -272,9 +278,82 @@ namespace GestioneOrganismi.Backend.Data
                 entity.HasIndex(e => e.DataCancellazione);
             });
 
+            // EnteAccreditamento Configuration
+            modelBuilder.Entity<EnteAccreditamento>(entity =>
+            {
+                entity.ToTable("EnteAccreditamento", schema: "Organismi");
+                
+                entity.HasKey(e => e.EntitaAziendaleId);
+
+                entity.Property(e => e.EntitaAziendaleId)
+                    .IsRequired();
+
+                entity.Property(e => e.Denominazione)
+                    .IsRequired()
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Sigla)
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Note)
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.DataFondazione);
+
+                entity.Property(e => e.DataCreazione)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.UniqueRowId)
+                    .HasDefaultValueSql("NEWID()")
+                    .ValueGeneratedOnAdd();
+
+                // Query Filter per Soft Delete
+                entity.HasQueryFilter(e => e.DataCancellazione == null);
+
+                // Indexes
+                entity.HasIndex(e => e.EntitaAziendaleId);
+                entity.HasIndex(e => e.DataCancellazione);
+            });
+
+            // ===== SCHEMA TIPOLOGICA =====
+
+            // TipoEmail Configuration
+            modelBuilder.Entity<TipoEmail>(entity =>
+            {
+                entity.ToTable("TipoEmail", schema: "Tipologica");
+            });
+
+            // TipoTelefono Configuration
+            modelBuilder.Entity<TipoTelefono>(entity =>
+            {
+                entity.ToTable("TipoTelefono", schema: "Tipologica");
+            });
+
+            // TipoIndirizzo Configuration
+            modelBuilder.Entity<TipoIndirizzo>(entity =>
+            {
+                entity.ToTable("TipoIndirizzo", schema: "Tipologica");
+            });
+
+            // TitoloOnorifico Configuration
+            modelBuilder.Entity<TitoloOnorifico>(entity =>
+            {
+                entity.ToTable("TitoloOnorifico", schema: "Tipologica");
+            });
+
+            // TipoEnteAccreditamento Configuration
+            modelBuilder.Entity<TipoEnteAccreditamento>(entity =>
+            {
+                entity.ToTable("TipoEnteAccreditamento", schema: "Tipologica");
+            });
+
+            // ===== SCHEMA ACCREDITAMENTO =====
+
             // RilascioAccreditamento Configuration
             modelBuilder.Entity<RilascioAccreditamento>(entity =>
             {
+                entity.ToTable("RilascioAccreditamento", schema: "Accreditamento");
                 entity.HasKey(e => e.RilascioId);
 
                 entity.Property(e => e.NumeroAtto)
@@ -309,6 +388,188 @@ namespace GestioneOrganismi.Backend.Data
                 entity.HasIndex(e => e.Stato);
                 entity.HasIndex(e => e.AmbitoApplicazioneId);
             });
+
+            // ===== SCHEMA ORGANISMI =====
+
+            // OrganismoAccreditato Configuration
+            modelBuilder.Entity<OrganismoAccreditato>(entity =>
+            {
+                entity.ToTable("OrganismoAccreditato", schema: "Organismi");
+            });
+
+            // EntitaAnagraficaContatto Configuration
+            modelBuilder.Entity<EntitaAnagraficaContatto>(entity =>
+            {
+                entity.ToTable("EntitaAnagraficaContatto", schema: "Persone");
+            });
+
+            // Documento Configuration
+            modelBuilder.Entity<Documento>(entity =>
+            {
+                entity.ToTable("Documento", schema: "Accreditamento");
+            });
+
+            // ===== SCHEMA RISORSE UMANE =====
+
+            // Dipartimento Configuration
+            modelBuilder.Entity<Dipartimento>(entity =>
+            {
+                entity.ToTable("Dipartimento", schema: "RisorseUmane");
+                entity.HasKey(e => e.DipartimentoId);
+
+                entity.Property(e => e.Nome)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.DataCreazione)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
+
+                // Query Filter per Soft Delete
+                entity.HasQueryFilter(d => d.DataCancellazione == null);
+
+                // Relationships
+                entity.HasOne(d => d.DipartimentoPadre)
+                    .WithMany(d => d.DipartimentiFiliali)
+                    .HasForeignKey(d => d.DipartimentoPadreId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Dipartimento_Padre");
+
+                // Indexes
+                entity.HasIndex(e => e.Nome);
+                entity.HasIndex(e => e.DipartimentoPadreId);
+                entity.HasIndex(e => e.DataCancellazione);
+            });
+
+            // Reparto Configuration
+            modelBuilder.Entity<Reparto>(entity =>
+            {
+                entity.ToTable("Reparto", schema: "RisorseUmane");
+                entity.HasKey(e => e.RepartoId);
+
+                entity.Property(e => e.Nome)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.DataCreazione)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
+
+                // Query Filter per Soft Delete
+                entity.HasQueryFilter(r => r.DataCancellazione == null);
+
+                // Relationships
+                // Relazione con Dipartimento
+                entity.HasOne(r => r.Dipartimento)
+                    .WithMany(d => d.Reparti)
+                    .HasForeignKey(r => r.DipartimentoId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Relazione con Manager (Dipendente) - Importante: configurare esplicitamente
+                entity.HasOne(r => r.Manager)
+                    .WithMany()
+                    .HasForeignKey(r => r.ManagerDipendenteId)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasConstraintName("FK_Reparto_Manager");
+
+                // Relazione con Dipendenti
+                entity.HasMany(r => r.Dipendenti)
+                    .WithOne(d => d.Reparto)
+                    .HasForeignKey(d => d.RepartoId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Indexes
+                entity.HasIndex(e => e.Nome);
+                entity.HasIndex(e => e.DipartimentoId);
+                entity.HasIndex(e => e.ManagerDipendenteId);
+                entity.HasIndex(e => e.DataCancellazione);
+            });
+
+            // Turno Configuration
+            modelBuilder.Entity<Turno>(entity =>
+            {
+                entity.ToTable("Turno", schema: "RisorseUmane");
+                entity.HasKey(e => e.TurnoId);
+
+                entity.Property(e => e.Descrizione)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.OraInizio)
+                    .IsRequired();
+
+                entity.Property(e => e.OraFine)
+                    .IsRequired();
+
+                entity.Property(e => e.DataCreazione)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
+
+                // Query Filter per Soft Delete
+                entity.HasQueryFilter(t => t.DataCancellazione == null);
+
+                // Relationships
+                entity.HasMany(t => t.Dipendenti)
+                    .WithOne(d => d.Turno)
+                    .HasForeignKey(d => d.TurnoId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Indexes
+                entity.HasIndex(e => e.Descrizione);
+                entity.HasIndex(e => e.DataCancellazione);
+            });
+
+            // Dipendente Configuration
+            modelBuilder.Entity<Dipendente>(entity =>
+            {
+                entity.ToTable("Dipendente", schema: "RisorseUmane");
+                entity.HasKey(e => e.DipendenteId);
+
+                entity.Property(e => e.CodiceFiscale)
+                    .IsRequired()
+                    .HasMaxLength(32);
+
+                entity.Property(e => e.Matricola)
+                    .IsRequired()
+                    .HasMaxLength(32);
+
+                entity.Property(e => e.LoginID)
+                    .IsRequired()
+                    .HasMaxLength(512);
+
+                entity.Property(e => e.Mansione)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.DataCreazione)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
+
+                // Query Filter per Soft Delete
+                entity.HasQueryFilter(d => d.DataCancellazione == null);
+
+                // Relationships
+                // Relazione con Reparto
+                entity.HasOne(d => d.Reparto)
+                    .WithMany(r => r.Dipendenti)
+                    .HasForeignKey(d => d.RepartoId)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasConstraintName("FK_Dipendente_Reparto");
+
+                // Relazione con Turno
+                entity.HasOne(d => d.Turno)
+                    .WithMany(t => t.Dipendenti)
+                    .HasForeignKey(d => d.TurnoId)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasConstraintName("FK_Dipendente_Turno");
+
+                // Indexes
+                entity.HasIndex(e => e.CodiceFiscale).IsUnique();
+                entity.HasIndex(e => e.Matricola).IsUnique();
+                entity.HasIndex(e => e.RepartoId);
+                entity.HasIndex(e => e.TurnoId);
+                entity.HasIndex(e => e.DataCancellazione);
+            });
         }
 
         public override int SaveChanges()
@@ -332,7 +593,11 @@ namespace GestioneOrganismi.Backend.Data
                     e.Entity is Email ||
                     e.Entity is Telefono ||
                     e.Entity is PersonaIndirizzo ||
-                    e.Entity is AmbitoApplicazione);
+                    e.Entity is AmbitoApplicazione ||
+                    e.Entity is Dipendente ||
+                    e.Entity is Dipartimento ||
+                    e.Entity is Reparto ||
+                    e.Entity is Turno);
 
             foreach (var entry in entries)
             {
@@ -368,6 +633,26 @@ namespace GestioneOrganismi.Backend.Data
                         ambito.DataCreazione = DateTime.UtcNow;
                         ambito.DataInizioValidita = DateTime.UtcNow;
                     }
+                    else if (entry.Entity is Dipendente dipendente)
+                    {
+                        dipendente.DataCreazione = DateTime.UtcNow;
+                        dipendente.DataInizioValidita = DateTime.UtcNow;
+                    }
+                    else if (entry.Entity is Dipartimento dipartimento)
+                    {
+                        dipartimento.DataCreazione = DateTime.UtcNow;
+                        dipartimento.DataInizioValidita = DateTime.UtcNow;
+                    }
+                    else if (entry.Entity is Reparto reparto)
+                    {
+                        reparto.DataCreazione = DateTime.UtcNow;
+                        reparto.DataInizioValidita = DateTime.UtcNow;
+                    }
+                    else if (entry.Entity is Turno turno)
+                    {
+                        turno.DataCreazione = DateTime.UtcNow;
+                        turno.DataInizioValidita = DateTime.UtcNow;
+                    }
                 }
                 else if (entry.State == EntityState.Modified)
                 {
@@ -390,6 +675,18 @@ namespace GestioneOrganismi.Backend.Data
                             break;
                         case AmbitoApplicazione a:
                             a.DataModifica = DateTime.UtcNow;
+                            break;
+                        case Dipendente d:
+                            d.DataModifica = DateTime.UtcNow;
+                            break;
+                        case Dipartimento dip:
+                            dip.DataModifica = DateTime.UtcNow;
+                            break;
+                        case Reparto r:
+                            r.DataModifica = DateTime.UtcNow;
+                            break;
+                        case Turno tur:
+                            tur.DataModifica = DateTime.UtcNow;
                             break;
                     }
                 }

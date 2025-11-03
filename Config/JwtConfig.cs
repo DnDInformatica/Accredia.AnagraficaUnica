@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace GestioneOrganismi.Backend.Config
+namespace Accredia.GestioneAnagrafica.API.Config
 {
     /// <summary>
     /// Configurazione JWT da appsettings.json

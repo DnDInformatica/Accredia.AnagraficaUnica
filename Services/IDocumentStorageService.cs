@@ -1,4 +1,4 @@
-namespace GestioneOrganismi.Backend.Services;
+namespace Accredia.GestioneAnagrafica.API.Services;
 
 /// <summary>
 /// Interfaccia per il servizio di storage documenti

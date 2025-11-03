@@ -2,12 +2,12 @@ using Carter;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.Models;
-using GestioneOrganismi.Backend.DTOs;
-using GestioneOrganismi.Backend.Responses;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.Models;
+using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.API.Responses;
 
-namespace GestioneOrganismi.Backend.Endpoints.RilasciAccreditamento;
+namespace Accredia.GestioneAnagrafica.API.Endpoints.RilasciAccreditamento;
 
 public class CreateRilascioAccreditamentoEndpoint : ICarterModule
 {
@@ -26,7 +26,7 @@ public class CreateRilascioAccreditamentoEndpoint : ICarterModule
 
             // Verify entities exist
             var enteAccreditamento = await context.EntiAccreditamento
-                .FirstOrDefaultAsync(e => e.Id == request.EnteAccreditamentoId);
+                .FirstOrDefaultAsync(e => e.EntitaAziendaleId == request.EnteAccreditamentoId);
             
             if (enteAccreditamento == null)
             {
@@ -70,7 +70,7 @@ public class CreateRilascioAccreditamentoEndpoint : ICarterModule
             {
                 RilascioId = rilascio.RilascioId,
                 EnteAccreditamentoId = rilascio.EnteAccreditamentoId,
-                NomeEnteAccreditamento = enteAccreditamento.Nome,
+                NomeEnteAccreditamento = enteAccreditamento.Denominazione,
                 EnteAccreditatoId = rilascio.EnteAccreditatoId,
                 RagioneSocialeEnteAccreditato = enteAccreditato.RagioneSociale,
                 AmbitoApplicazioneId = rilascio.AmbitoApplicazioneId,
@@ -83,6 +83,12 @@ public class CreateRilascioAccreditamentoEndpoint : ICarterModule
             };
 
             return Results.Created($"/api/rilasci-accreditamento/{rilascio.RilascioId}", response);
-        }).RequireAuthorization();
+        })
+            .WithTags("RilasciAccreditamento")
+            .WithName("CreateRilascioAccreditamento")
+            .Produces<RilascioAccreditamentoDTO.Response>(StatusCodes.Status201Created)
+            .Produces<ApiResponse>(StatusCodes.Status400BadRequest)
+            .Produces<ApiResponse>(StatusCodes.Status422UnprocessableEntity)
+            .RequireAuthorization();
     }
 }

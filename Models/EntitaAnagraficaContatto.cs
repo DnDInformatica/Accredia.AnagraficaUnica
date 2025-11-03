@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GestioneOrganismi.Backend.Models
+namespace Accredia.GestioneAnagrafica.API.Models
 {
     /// <summary>
     /// Entità Anagrafica Contatto - Relazione N:N tra Entità e Persone

@@ -1,58 +1,69 @@
-using System;
-using System.Threading.Tasks;
+using Carter;
+using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.DTOs;
-using GestioneOrganismi.Backend.Models;
-using GestioneOrganismi.Backend.Responses;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.API.Models;
+using Accredia.GestioneAnagrafica.API.Responses;
 using AutoMapper;
-using System.Security.Claims;
 
-namespace GestioneOrganismi.Backend.Endpoints.EntiAccreditamento
+namespace Accredia.GestioneAnagrafica.API.Endpoints.EntiAccreditamento;
+
+public class CreateEnteAccreditamentoEndpoint : ICarterModule
 {
-    public class CreateEnteAccreditamentoEndpoint
+    public void AddRoutes(IEndpointRouteBuilder app)
     {
-        private readonly PersoneDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly ClaimsPrincipal _user;
-
-        public CreateEnteAccreditamentoEndpoint(
-            PersoneDbContext context, 
-            IMapper mapper,
-            ClaimsPrincipal user)
+        app.MapPost("/api/enti-accreditamento", async (
+            [FromBody] EnteAccreditamentoDTO.Create request,
+            [FromServices] PersoneDbContext context,
+            [FromServices] IMapper mapper,
+            [FromServices] IValidator<EnteAccreditamentoDTO.Create> validator) =>
         {
-            _context = context;
-            _mapper = mapper;
-            _user = user;
-        }
-
-        public async Task<ApiResponse<GestioneOrganismi.Backend.DTOs.EnteAccreditamentoDTO.Response>> CreateAsync(GestioneOrganismi.Backend.DTOs.EnteAccreditamentoDTO.Create dto)
-        {
-            // Validazione codice identificativo univoco
-            var esisteGià = await _context.EntiAccreditamento
-                .AnyAsync(e => e.CodiceIdentificativo == dto.Codice && !e.IsDeleted);
-
-            if (esisteGià)
+            var validationResult = await validator.ValidateAsync(request);
+            if (!validationResult.IsValid)
             {
-                return ApiResponse<GestioneOrganismi.Backend.DTOs.EnteAccreditamentoDTO.Response>.ErrorResponse(
-                    "Un Ente di Accreditamento con questo codice identificativo esiste già.");
+                return Results.ValidationProblem(validationResult.ToDictionary());
             }
 
-            var enteAccreditamento = _mapper.Map<EnteAccreditamento>(dto);
+            // Check if EntitaAziendale exists
+            var entitaExists = await context.EntiAziendali
+                .AnyAsync(e => e.EntitaAziendaleId == request.EntitaAziendaleId);
 
-            // Impostazione campi di auditing
-            enteAccreditamento.CreatedBy = _user.FindFirstValue(ClaimTypes.Name) ?? "Sistema";
-            enteAccreditamento.CreatedAt = DateTime.UtcNow;
-            enteAccreditamento.Stato = EnteAccreditamento.StatoAccreditamento.InIstruttoria;
+            if (!entitaExists)
+            {
+                return Results.BadRequest(new ApiResponse
+                {
+                    Success = false,
+                    Message = "L'Entità Aziendale specificata non esiste."
+                });
+            }
 
-            _context.EntiAccreditamento.Add(enteAccreditamento);
-            await _context.SaveChangesAsync();
+            var enteAccreditamento = new EnteAccreditamento
+            {
+                EntitaAziendaleId = request.EntitaAziendaleId,
+                Denominazione = request.Denominazione,
+                Sigla = request.Sigla,
+                Note = request.Note,
+                DataFondazione = request.DataFondazione,
+                DataCreazione = DateTime.UtcNow,
+                UniqueRowId = Guid.NewGuid(),
+                DataInizioValidita = DateTime.UtcNow,
+                DataFineValidita = DateTime.MaxValue
+            };
 
-            var responseDto = _mapper.Map<GestioneOrganismi.Backend.DTOs.EnteAccreditamentoDTO.Response>(enteAccreditamento);
+            context.EntiAccreditamento.Add(enteAccreditamento);
+            await context.SaveChangesAsync();
 
-            return ApiResponse<GestioneOrganismi.Backend.DTOs.EnteAccreditamentoDTO.Response>.SuccessResponse(
-                responseDto, 
-                "Ente di Accreditamento creato con successo.");
-        }
+            var responseDto = mapper.Map<EnteAccreditamentoDTO.Response>(enteAccreditamento);
+
+            return Results.Created($"/api/enti-accreditamento/{enteAccreditamento.EntitaAziendaleId}", responseDto);
+        })
+            .WithTags("EntiAccreditamento")
+            .WithName("CreateEnteAccreditamento")
+            .Produces<EnteAccreditamentoDTO.Response>(StatusCodes.Status201Created)
+            .Produces<ApiResponse>(StatusCodes.Status400BadRequest)
+            .Produces<ApiResponse>(StatusCodes.Status422UnprocessableEntity)
+            .RequireAuthorization();
     }
 }

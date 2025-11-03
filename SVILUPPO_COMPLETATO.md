@@ -1,7 +1,7 @@
 # ✅ SVILUPPO COMPLETATO - Riepilogo Finale
 
 **Data:** 1 Novembre 2025  
-**Progetto:** GestioneOrganismi.Backend  
+**Progetto:** Accredia.GestioneAnagrafica.API  
 **Framework:** .NET 9.0  
 **Stato:** ✅ **TUTTI I MODELLI IMPLEMENTATI**
 

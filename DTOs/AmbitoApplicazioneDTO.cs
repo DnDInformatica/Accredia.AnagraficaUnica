@@ -1,4 +1,4 @@
-namespace GestioneOrganismi.Backend.DTOs;
+namespace Accredia.GestioneAnagrafica.API.DTOs;
 
 /// <summary>
 /// DTOs per Ambito Applicazione

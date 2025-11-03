@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace GestioneOrganismi.Backend.DTOs
+namespace Accredia.GestioneAnagrafica.API.DTOs
 {
     /// <summary>
     /// DTO per la creazione di una nuova Persona

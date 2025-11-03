@@ -30,7 +30,7 @@ Endpoints/AmbitiApplicazione/
 ### 3. File Modificati
 ```
 ✅ Program.cs - Aggiunta registrazione FluentValidation
-✅ GestioneOrganismi.Backend.csproj - Aggiunto package FluentValidation.DependencyInjectionExtensions
+✅ Accredia.GestioneAnagrafica.API.csproj - Aggiunto package FluentValidation.DependencyInjectionExtensions
 ```
 
 ---
@@ -74,7 +74,7 @@ Endpoints/AmbitiApplicazione/
 ❌ 0 Errori
 
 Tempo: 2.02 secondi
-Output: C:\Accredia\Sviluppo\bin\Debug\net9.0\GestioneOrganismi.Backend.dll
+Output: C:\Accredia\Sviluppo\bin\Debug\net9.0\Accredia.GestioneAnagrafica.API.dll
 ```
 
 ---

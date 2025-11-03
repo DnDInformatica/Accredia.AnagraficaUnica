@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace GestioneOrganismi.Backend.DTOs;
+namespace Accredia.GestioneAnagrafica.API.DTOs;
 
 // ==================== INDIRIZZO ====================
 public class IndirizzoDTO

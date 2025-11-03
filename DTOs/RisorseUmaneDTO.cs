@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace GestioneOrganismi.Backend.DTOs;
+namespace Accredia.GestioneAnagrafica.API.DTOs;
 
 // ==================== DIPENDENTE ====================
 public class DipendenteDTO

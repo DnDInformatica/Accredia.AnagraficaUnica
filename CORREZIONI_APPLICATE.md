@@ -1,7 +1,7 @@
 # ✅ COMPILAZIONE RIUSCITA - Riepilogo Correzioni
 
 **Data:** 31 Ottobre 2025  
-**Progetto:** GestioneOrganismi.Backend  
+**Progetto:** Accredia.GestioneAnagrafica.API  
 **Framework:** .NET 9.0
 
 ---
@@ -67,7 +67,7 @@ Errori: 0
 
 ---
 
-### 7. **GestioneOrganismi.Backend.csproj** - Già corretto
+### 7. **Accredia.GestioneAnagrafica.API.csproj** - Già corretto
 ✅ AutoMapper 12.0.1  
 ✅ Microsoft.IdentityModel.Tokens 8.14.0  
 ✅ System.IdentityModel.Tokens.Jwt 8.14.0  

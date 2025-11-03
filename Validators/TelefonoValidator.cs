@@ -1,8 +1,8 @@
 using FluentValidation;
-using GestioneOrganismi.Backend.DTOs;
+using Accredia.GestioneAnagrafica.API.DTOs;
 using System.Text.RegularExpressions;
 
-namespace GestioneOrganismi.Backend.Validators
+namespace Accredia.GestioneAnagrafica.API.Validators
 {
     /// <summary>
     /// Validator per la creazione di Telefoni

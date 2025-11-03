@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace GestioneOrganismi.Backend.Responses
+namespace Accredia.GestioneAnagrafica.API.Responses
 {
     /// <summary>
     /// Wrapper standard per tutte le risposte API.

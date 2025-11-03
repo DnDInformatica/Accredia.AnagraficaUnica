@@ -2,11 +2,11 @@ using Carter;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.DTOs;
-using GestioneOrganismi.Backend.Responses;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.API.Responses;
 
-namespace GestioneOrganismi.Backend.Endpoints.RilasciAccreditamento;
+namespace Accredia.GestioneAnagrafica.API.Endpoints.RilasciAccreditamento;
 
 public class UpdateRilascioAccreditamentoEndpoint : ICarterModule
 {
@@ -53,7 +53,7 @@ public class UpdateRilascioAccreditamentoEndpoint : ICarterModule
             {
                 RilascioId = rilascio.RilascioId,
                 EnteAccreditamentoId = rilascio.EnteAccreditamentoId,
-                NomeEnteAccreditamento = rilascio.EnteAccreditamento?.Nome,
+                NomeEnteAccreditamento = rilascio.EnteAccreditamento?.Denominazione,
                 EnteAccreditatoId = rilascio.EnteAccreditatoId,
                 RagioneSocialeEnteAccreditato = rilascio.EnteAccreditato?.RagioneSociale,
                 AmbitoApplicazioneId = rilascio.AmbitoApplicazioneId,
@@ -66,6 +66,13 @@ public class UpdateRilascioAccreditamentoEndpoint : ICarterModule
             };
 
             return Results.Ok(ApiResponse<RilascioAccreditamentoDTO.Response>.SuccessResponse(response));
-        }).RequireAuthorization();
+        })
+            .WithTags("RilasciAccreditamento")
+            .WithName("UpdateRilascioAccreditamento")
+            .Produces<RilascioAccreditamentoDTO.Response>(StatusCodes.Status200OK)
+            .Produces<ApiResponse>(StatusCodes.Status404NotFound)
+            .Produces<ApiResponse>(StatusCodes.Status400BadRequest)
+            .Produces<ApiResponse>(StatusCodes.Status422UnprocessableEntity)
+            .RequireAuthorization();
     }
 }

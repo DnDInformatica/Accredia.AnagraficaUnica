@@ -1,10 +1,10 @@
 using Carter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.Responses;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.Responses;
 
-namespace GestioneOrganismi.Backend.Endpoints.EntiAccreditamento;
+namespace Accredia.GestioneAnagrafica.API.Endpoints.EntiAccreditamento;
 
 public class DeleteEnteAccreditamentoEndpoint : ICarterModule
 {
@@ -15,7 +15,7 @@ public class DeleteEnteAccreditamentoEndpoint : ICarterModule
             [FromServices] PersoneDbContext context) =>
         {
             var enteAccreditamento = await context.EntiAccreditamento
-                .FirstOrDefaultAsync(e => e.Id == id);
+                .FirstOrDefaultAsync(e => e.EntitaAziendaleId == id);
 
             if (enteAccreditamento == null)
             {
@@ -27,7 +27,7 @@ public class DeleteEnteAccreditamentoEndpoint : ICarterModule
             }
 
             // Soft Delete
-            enteAccreditamento.SoftDelete("Sistema");
+            enteAccreditamento.SoftDelete(0);
 
             await context.SaveChangesAsync();
 
@@ -36,6 +36,11 @@ public class DeleteEnteAccreditamentoEndpoint : ICarterModule
                 Success = true,
                 Message = "Ente Accreditamento eliminato con successo."
             });
-        }).RequireAuthorization();
+        })
+            .WithTags("EntiAccreditamento")
+            .WithName("DeleteEnteAccreditamento")
+            .Produces<ApiResponse>(StatusCodes.Status200OK)
+            .Produces<ApiResponse>(StatusCodes.Status404NotFound)
+            .RequireAuthorization();
     }
 }

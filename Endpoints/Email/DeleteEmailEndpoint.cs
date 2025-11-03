@@ -1,10 +1,10 @@
 using Carter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.Responses;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.Responses;
 
-namespace GestioneOrganismi.Backend.Endpoints.Email;
+namespace Accredia.GestioneAnagrafica.API.Endpoints.Email;
 
 public class DeleteEmailEndpoint : ICarterModule
 {

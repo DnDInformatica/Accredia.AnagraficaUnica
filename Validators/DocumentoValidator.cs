@@ -1,10 +1,10 @@
 using FluentValidation;
-using GestioneOrganismi.Backend.DTOs;
-using GestioneOrganismi.Backend.Services;
+using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.API.Services;
 using Microsoft.Extensions.Options;
-using GestioneOrganismi.Backend.Config;
+using Accredia.GestioneAnagrafica.API.Config;
 
-namespace GestioneOrganismi.Backend.Validators
+namespace Accredia.GestioneAnagrafica.API.Validators
 {
     public class DocumentoUploadValidator : AbstractValidator<DocumentoDTO.Upload>
     {

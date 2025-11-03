@@ -1,11 +1,11 @@
 using Carter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GestioneOrganismi.Backend.Data;
-using GestioneOrganismi.Backend.DTOs;
-using GestioneOrganismi.Backend.Responses;
+using Accredia.GestioneAnagrafica.API.Data;
+using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.API.Responses;
 
-namespace GestioneOrganismi.Backend.Endpoints.RilasciAccreditamento;
+namespace Accredia.GestioneAnagrafica.API.Endpoints.RilasciAccreditamento;
 
 public class GetRilasciAccreditamentoEndpoint : ICarterModule
 {
@@ -66,7 +66,7 @@ public class GetRilasciAccreditamentoEndpoint : ICarterModule
                 .Select(r => new RilascioAccreditamentoDTO.List
                 {
                     RilascioId = r.RilascioId,
-                    NomeEnteAccreditamento = r.EnteAccreditamento != null ? r.EnteAccreditamento.Nome : null,
+                    NomeEnteAccreditamento = r.EnteAccreditamento != null ? r.EnteAccreditamento.Denominazione : null,
                     RagioneSocialeEnteAccreditato = r.EnteAccreditato != null ? r.EnteAccreditato.RagioneSociale : null,
                     NumeroAtto = r.NumeroAtto,
                     DataRilascio = r.DataRilascio,
@@ -88,7 +88,12 @@ public class GetRilasciAccreditamentoEndpoint : ICarterModule
             };
 
             return Results.Ok(ApiResponse<PageResult<RilascioAccreditamentoDTO.List>>.SuccessResponse(pageResult));
-        }).RequireAuthorization();
+        })
+            .WithTags("RilasciAccreditamento")
+            .WithName("GetRilasciAccreditamento")
+            .WithOpenApi()
+            .Produces(StatusCodes.Status200OK)
+            .RequireAuthorization();
 
         // Get by ID
         app.MapGet("/api/rilasci-accreditamento/{id}", async (
@@ -114,7 +119,7 @@ public class GetRilasciAccreditamentoEndpoint : ICarterModule
             {
                 RilascioId = rilascio.RilascioId,
                 EnteAccreditamentoId = rilascio.EnteAccreditamentoId,
-                NomeEnteAccreditamento = rilascio.EnteAccreditamento?.Nome,
+                NomeEnteAccreditamento = rilascio.EnteAccreditamento?.Denominazione,
                 EnteAccreditatoId = rilascio.EnteAccreditatoId,
                 RagioneSocialeEnteAccreditato = rilascio.EnteAccreditato?.RagioneSociale,
                 AmbitoApplicazioneId = rilascio.AmbitoApplicazioneId,
@@ -128,6 +133,12 @@ public class GetRilasciAccreditamentoEndpoint : ICarterModule
             };
 
             return Results.Ok(ApiResponse<RilascioAccreditamentoDTO.Response>.SuccessResponse(response));
-        }).RequireAuthorization();
+        })
+            .WithTags("RilasciAccreditamento")
+            .WithName("GetRilascioAccreditamentoById")
+            .WithOpenApi()
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .RequireAuthorization();
     }
 }

@@ -1,4 +1,4 @@
-# 📋 Piano di Sviluppo Completo - GestioneOrganismi.Backend
+# 📋 Piano di Sviluppo Completo - Accredia.GestioneAnagrafica.API
 
 **Data Creazione:** 1 Novembre 2025  
 **Stato:** In Progresso  
