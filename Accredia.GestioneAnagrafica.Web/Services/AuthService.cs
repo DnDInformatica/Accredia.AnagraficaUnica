@@ -29,10 +29,10 @@ namespace Accredia.GestioneAnagrafica.Web.Services
                 _logger.LogInformation($"Tentativo di login per l'utente: {username}");
 
                 var request = new { username, password };
-                
+
                 // Chiama l'API di login
                 var response = await _httpClient.PostAsJsonAsync(
-                    "/auth/login", 
+                    "/auth/login",
                     request
                 );
 

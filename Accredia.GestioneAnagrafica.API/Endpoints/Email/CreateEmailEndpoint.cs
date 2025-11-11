@@ -3,9 +3,9 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Accredia.GestioneAnagrafica.API.Data;
-using Accredia.GestioneAnagrafica.API.DTOs;
 using Accredia.GestioneAnagrafica.Shared.DTOs;
-using Accredia.GestioneAnagrafica.API.Responses;
+using Accredia.GestioneAnagrafica.Shared.DTOs;
+using Accredia.GestioneAnagrafica.Shared.Responses;
 using EmailModel = Accredia.GestioneAnagrafica.Shared.Models.Email;
 
 namespace Accredia.GestioneAnagrafica.API.Endpoints.Email;

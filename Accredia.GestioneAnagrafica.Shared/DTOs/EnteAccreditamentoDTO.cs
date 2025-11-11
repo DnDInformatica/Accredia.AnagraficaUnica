@@ -1,4 +1,4 @@
-namespace Accredia.GestioneAnagrafica.API.DTOs;
+namespace Accredia.GestioneAnagrafica.Shared.DTOs;
 
 /// <summary>
 /// DTO per Ente Accreditamento con classi nested
