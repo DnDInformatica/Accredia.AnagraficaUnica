@@ -1,0 +1,283 @@
+@page "/dashboard"
+@using Microsoft.AspNetCore.Components.Authorization
+@using Accredia.GestioneAnagrafica.Web.Services
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+@inject ILogger<Dashboard> Logger
+
+<PageTitle>Dashboard - Accredia Gestione Anagrafica</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <div class="dashboard-container">
+            <div class="container-fluid mt-4">
+                <!-- Header Section -->
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <h1 class="mb-2">
+                            <span class="oi oi-dashboard me-2"></span>
+                            Dashboard
+                        </h1>
+                        <p class="text-muted">
+                            Benvenuto, <strong>@context.User.Identity?.Name</strong>!
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button class="btn btn-danger" @onclick="HandleLogout">
+                            <span class="oi oi-account-logout me-2"></span>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Info Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="card-title text-muted mb-2">Organismi</h6>
+                                        <h3 class="mb-0">24</h3>
+                                    </div>
+                                    <div class="text-primary" style="font-size: 2rem;">
+                                        <span class="oi oi-list"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="card-title text-muted mb-2">Persone</h6>
+                                        <h3 class="mb-0">152</h3>
+                                    </div>
+                                    <div class="text-info" style="font-size: 2rem;">
+                                        <span class="oi oi-people"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="card-title text-muted mb-2">Documenti</h6>
+                                        <h3 class="mb-0">487</h3>
+                                    </div>
+                                    <div class="text-success" style="font-size: 2rem;">
+                                        <span class="oi oi-file"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="card-title text-muted mb-2">Indirizzi</h6>
+                                        <h3 class="mb-0">89</h3>
+                                    </div>
+                                    <div class="text-warning" style="font-size: 2rem;">
+                                        <span class="oi oi-map-marker"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Info Section -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">
+                                    <span class="oi oi-person me-2"></span>
+                                    Informazioni Utente
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-sm table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold">Username:</td>
+                                            <td>@context.User.Identity?.Name</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">Autenticazione:</td>
+                                            <td>
+                                                <span class="badge bg-success">
+                                                    <span class="oi oi-check me-1"></span>
+                                                    Autenticato
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">Ruolo:</td>
+                                            <td>Administrator</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">Data Login:</td>
+                                            <td>@DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0">
+                                    <span class="oi oi-list me-2"></span>
+                                    Menu Rapido
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group list-group-flush">
+                                    <a href="/organismi" class="list-group-item list-group-item-action">
+                                        <span class="oi oi-list me-2"></span>
+                                        Visualizza Organismi Accreditati
+                                    </a>
+                                    <a href="/persone" class="list-group-item list-group-item-action">
+                                        <span class="oi oi-people me-2"></span>
+                                        Gestisci Persone
+                                    </a>
+                                    <a href="/documenti" class="list-group-item list-group-item-action">
+                                        <span class="oi oi-file me-2"></span>
+                                        Visualizza Documenti
+                                    </a>
+                                    <a href="/indirizzi" class="list-group-item list-group-item-action">
+                                        <span class="oi oi-map-marker me-2"></span>
+                                        Gestisci Indirizzi
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Latest Activities -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">
+                                    <span class="oi oi-bell me-2"></span>
+                                    Attività Recenti
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>ℹ️  Informazione:</strong> Non ci sono attività recenti da mostrare.
+                                    Questa sezione sarà aggiornata quando avrai iniziato a lavorare con i dati.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .dashboard-container {
+                background-color: #f5f5f5;
+                min-height: 100vh;
+                padding-bottom: 2rem;
+            }
+
+            .card {
+                border: none;
+                border-radius: 0.5rem;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+
+            .card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+
+            .card-header {
+                border-radius: 0.5rem 0.5rem 0 0;
+                border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+            }
+
+            .list-group-item {
+                border: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .list-group-item:last-child {
+                border-bottom: none;
+            }
+
+            .list-group-item:hover {
+                background-color: #f8f9fa;
+                color: #0052cc;
+            }
+        </style>
+    </Authorized>
+    
+    <NotAuthorized>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading">
+                            <span class="oi oi-warning me-2"></span>
+                            Accesso Negato
+                        </h4>
+                        <p>Non sei autenticato. Accedi per continuare.</p>
+                        <hr>
+                        <a href="/login" class="btn btn-primary">
+                            <span class="oi oi-account-login me-2"></span>
+                            Vai al Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    /// <summary>
+    /// Gestisce il logout
+    /// </summary>
+    private async Task HandleLogout()
+    {
+        try
+        {
+            Logger.LogInformation("Logout iniziato");
+            await AuthService.LogoutAsync();
+            Logger.LogInformation("Logout completato");
+            
+            // Navigazione al login
+            Navigation.NavigateTo("/login", forceLoad: true);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Errore durante il logout");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Dashboard inizializzato");
+        await base.OnInitializedAsync();
+    }
+}

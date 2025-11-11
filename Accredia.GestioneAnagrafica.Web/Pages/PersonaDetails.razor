@@ -1,0 +1,345 @@
+@page "/persone/{Id:int}"
+@using Accredia.GestioneAnagrafica.Web.Services
+@using Accredia.GestioneAnagrafica.Web.Components
+@using Accredia.GestioneAnagrafica.Shared.DTOs
+@inject IPersoneService PersoneService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject ILogger<PersonaDetails> Logger
+
+<PageTitle>Dettagli Persona - Accredia Gestione Anagrafica</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudBreadcrumbs Items="_breadcrumbItems" Separator=">"></MudBreadcrumbs>
+
+    @if (isLoading)
+    {
+        <MudPaper Class="pa-4 mt-4">
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
+            <MudText Align="Align.Center" Class="my-4">Caricamento dati persona...</MudText>
+        </MudPaper>
+    }
+    else if (persona == null)
+    {
+        <MudAlert Severity="Severity.Error" Class="mt-4">
+            Persona non trovata. <MudLink Href="/persone">Torna all'elenco</MudLink>
+        </MudAlert>
+    }
+    else
+    {
+        <MudPaper Class="pa-4 mt-4">
+            <!-- Header con azioni -->
+            <MudGrid>
+                <MudItem xs="12" sm="8">
+                    <MudText Typo="Typo.h4" Class="mb-2">
+                        <MudIcon Icon="@Icons.Material.Filled.Person" Class="mr-2" />
+                        @persona.Nome @persona.Cognome
+                    </MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Default">
+                        Codice Fiscale: <strong>@persona.CodiceFiscale</strong>
+                    </MudText>
+                </MudItem>
+                <MudItem xs="12" sm="4" Class="d-flex justify-end align-center">
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.Edit"
+                               OnClick="@(() => Navigation.NavigateTo($"/persone/{Id}/edit"))"
+                               Class="mr-2">
+                        Modifica
+                    </MudButton>
+                    <MudButton Variant="Variant.Outlined"
+                               Color="Color.Error"
+                               StartIcon="@Icons.Material.Filled.Delete"
+                               OnClick="@ConfirmDelete">
+                        Elimina
+                    </MudButton>
+                </MudItem>
+            </MudGrid>
+
+            <MudDivider Class="my-4" />
+
+            <!-- Dati Anagrafici -->
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h6" Class="mb-3">Dati Anagrafici</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6" md="4">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Nome</MudText>
+                    <MudText Typo="Typo.body1">@persona.Nome</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6" md="4">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Cognome</MudText>
+                    <MudText Typo="Typo.body1">@persona.Cognome</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6" md="4">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Codice Fiscale</MudText>
+                    <MudText Typo="Typo.body1">@persona.CodiceFiscale</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6" md="4">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Genere</MudText>
+                    <MudText Typo="Typo.body1">@GetGenereLabel(persona.Genere)</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6" md="4">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Data di Nascita</MudText>
+                    <MudText Typo="Typo.body1">@(persona.DataNascita?.ToString("dd/MM/yyyy") ?? "-")</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6" md="4">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Luogo di Nascita</MudText>
+                    <MudText Typo="Typo.body1">@(persona.LuogoNascita ?? "-")</MudText>
+                </MudItem>
+            </MudGrid>
+
+            <MudDivider Class="my-4" />
+
+            <!-- Dati Professionali -->
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h6" Class="mb-3">Dati Professionali</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Qualifica</MudText>
+                    <MudText Typo="Typo.body1">@(persona.Qualifica ?? "-")</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Titolo</MudText>
+                    <MudText Typo="Typo.body1">@(persona.Titolo ?? "-")</MudText>
+                </MudItem>
+            </MudGrid>
+
+            <MudDivider Class="my-4" />
+
+            <!-- Privacy -->
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h6" Class="mb-3">Consenso Privacy</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Consenso</MudText>
+                    <MudChip Size="Size.Small" Color="@(persona.PrivacyConsent ? Color.Success : Color.Default)">
+                        @(persona.PrivacyConsent ? "Accordato" : "Non accordato")
+                    </MudChip>
+                </MudItem>
+
+                <MudItem xs="12" sm="6">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Data Consenso</MudText>
+                    <MudText Typo="Typo.body1">@(persona.DataConsensoPrivacy?.ToString("dd/MM/yyyy") ?? "-")</MudText>
+                </MudItem>
+            </MudGrid>
+
+            @if (!string.IsNullOrEmpty(persona.Note))
+            {
+                <MudDivider Class="my-4" />
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.h6" Class="mb-3">Note</MudText>
+                        <MudText Typo="Typo.body1">@persona.Note</MudText>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            <MudDivider Class="my-4" />
+
+            <!-- Metadati -->
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h6" Class="mb-3">Informazioni Sistema</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6" md="3">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Data Creazione</MudText>
+                    <MudText Typo="Typo.body2">@persona.DataCreazione.ToString("dd/MM/yyyy HH:mm")</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6" md="3">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Data Modifica</MudText>
+                    <MudText Typo="Typo.body2">@(persona.DataModifica?.ToString("dd/MM/yyyy HH:mm") ?? "-")</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6" md="3">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Creato Da</MudText>
+                    <MudText Typo="Typo.body2">@(persona.CreatoDa ?? "-")</MudText>
+                </MudItem>
+
+                <MudItem xs="12" sm="6" md="3">
+                    <MudText Typo="Typo.subtitle2" Color="Color.Default">Modificato Da</MudText>
+                    <MudText Typo="Typo.body2">@(persona.ModificatoDa ?? "-")</MudText>
+                </MudItem>
+            </MudGrid>
+
+            <MudDivider Class="my-4" />
+
+            <!-- Sezione Contatti con Expansion Panels (Read-Only) -->
+            <MudExpansionPanels MultiExpansion="true" Class="mb-4">
+                <!-- Panel Indirizzi -->
+                <MudExpansionPanel Text="Indirizzi" IsInitiallyExpanded="false">
+                    <TitleContent>
+                        <div class="d-flex align-center">
+                            <MudIcon Icon="@Icons.Material.Filled.LocationOn" Class="mr-2" />
+                            <MudText>Indirizzi</MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <PersonaIndirizzo EntitaAziendaleId="@Id" IsReadOnly="true" />
+                    </ChildContent>
+                </MudExpansionPanel>
+
+                <!-- Panel Email -->
+                <MudExpansionPanel Text="Email" IsInitiallyExpanded="false">
+                    <TitleContent>
+                        <div class="d-flex align-center">
+                            <MudIcon Icon="@Icons.Material.Filled.Email" Class="mr-2" />
+                            <MudText>Email</MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <PersonaEmail EntitaAziendaleId="@Id" IsReadOnly="true" />
+                    </ChildContent>
+                </MudExpansionPanel>
+
+                <!-- Panel Telefoni -->
+                <MudExpansionPanel Text="Telefoni" IsInitiallyExpanded="false">
+                    <TitleContent>
+                        <div class="d-flex align-center">
+                            <MudIcon Icon="@Icons.Material.Filled.Phone" Class="mr-2" />
+                            <MudText>Telefoni</MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <PersonaTelefono EntitaAziendaleId="@Id" IsReadOnly="true" />
+                    </ChildContent>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+
+            <MudDivider Class="my-4" />
+
+            <!-- Pulsante Torna Indietro -->
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Default"
+                       StartIcon="@Icons.Material.Filled.ArrowBack"
+                       OnClick="@(() => Navigation.NavigateTo("/persone"))">
+                Torna all'Elenco
+            </MudButton>
+        </MudPaper>
+    }
+</MudContainer>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private PersonaResponse? persona;
+    private bool isLoading = true;
+
+    private List<BreadcrumbItem> _breadcrumbItems = new()
+    {
+        new BreadcrumbItem("Home", href: "/"),
+        new BreadcrumbItem("Persone", href: "/persone"),
+        new BreadcrumbItem("Dettagli", href: null, disabled: true)
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPersonaAsync();
+    }
+
+    private async Task LoadPersonaAsync()
+    {
+        try
+        {
+            isLoading = true;
+            StateHasChanged();
+
+            Logger.LogInformation("Caricamento persona ID: {Id}", Id);
+
+            persona = await PersoneService.GetPersonaByIdAsync(Id);
+
+            if (persona != null)
+            {
+                // Aggiorna breadcrumb
+                _breadcrumbItems[2] = new BreadcrumbItem($"{persona.Nome} {persona.Cognome}", href: null, disabled: true);
+            }
+            else
+            {
+                Snackbar.Add("Persona non trovata", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Errore nel caricamento della persona ID: {Id}", Id);
+            Snackbar.Add($"Errore: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private string GetGenereLabel(string genere)
+    {
+        return genere switch
+        {
+            "M" => "Maschio",
+            "F" => "Femmina",
+            "O" => "Altro",
+            _ => genere
+        };
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (persona == null) return;
+
+        var parameters = new DialogParameters
+        {
+            ["ContentText"] = $"Sei sicuro di voler eliminare la persona '{persona.Nome} {persona.Cognome}'? Questa azione non può essere annullata.",
+            ["ButtonText"] = "Elimina",
+            ["Color"] = Color.Error
+        };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small };
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Conferma Eliminazione", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await DeletePersonaAsync();
+        }
+    }
+
+    private async Task DeletePersonaAsync()
+    {
+        try
+        {
+            Logger.LogInformation("Eliminazione persona ID: {Id}", Id);
+
+            var success = await PersoneService.DeletePersonaAsync(Id);
+
+            if (success)
+            {
+                Snackbar.Add($"Persona eliminata con successo", Severity.Success);
+                await Task.Delay(500);
+                Navigation.NavigateTo("/persone");
+            }
+            else
+            {
+                Snackbar.Add("Errore durante l'eliminazione della persona", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Errore nell'eliminazione della persona ID: {Id}", Id);
+            Snackbar.Add($"Errore: {ex.Message}", Severity.Error);
+        }
+    }
+}

@@ -1,0 +1,250 @@
+@page "/persone/{Id:int}/edit"
+@using Accredia.GestioneAnagrafica.Web.Services
+@using Accredia.GestioneAnagrafica.Web.Components
+@using Accredia.GestioneAnagrafica.Shared.DTOs
+@inject IPersoneService PersoneService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@inject ILogger<PersonaEdit> Logger
+
+<PageTitle>Modifica Persona - Accredia Gestione Anagrafica</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudBreadcrumbs Items="_breadcrumbItems" Separator=">"></MudBreadcrumbs>
+
+    @if (isLoading)
+    {
+        <MudPaper Class="pa-4 mt-4">
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
+            <MudText Align="Align.Center" Class="my-4">Caricamento dati persona...</MudText>
+        </MudPaper>
+    }
+    else if (model == null)
+    {
+        <MudAlert Severity="Severity.Error" Class="mt-4">
+            Persona non trovata. <MudLink Href="/persone">Torna all'elenco</MudLink>
+        </MudAlert>
+    }
+    else
+    {
+        <MudPaper Class="pa-4 mt-4">
+            <MudText Typo="Typo.h4" Class="mb-4">
+                <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-2" />
+                Modifica Persona: @personaName
+            </MudText>
+
+            <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+
+                <PersonaForm Model="@model" IsReadOnly="false" />
+
+                <MudDivider Class="my-4" />
+
+                <!-- Sezione Contatti con Expansion Panels -->
+                <MudExpansionPanels MultiExpansion="true" Class="mb-4">
+                    <!-- Panel Indirizzi -->
+                    <MudExpansionPanel Text="Indirizzi" IsInitiallyExpanded="false">
+                        <TitleContent>
+                            <div class="d-flex align-center">
+                                <MudIcon Icon="@Icons.Material.Filled.LocationOn" Class="mr-2" />
+                                <MudText>Indirizzi</MudText>
+                            </div>
+                        </TitleContent>
+                        <ChildContent>
+                            <PersonaIndirizzo EntitaAziendaleId="@Id" 
+                                            IsReadOnly="false" 
+                                            OnDataChanged="OnContattiChanged" />
+                        </ChildContent>
+                    </MudExpansionPanel>
+
+                    <!-- Panel Email -->
+                    <MudExpansionPanel Text="Email" IsInitiallyExpanded="false">
+                        <TitleContent>
+                            <div class="d-flex align-center">
+                                <MudIcon Icon="@Icons.Material.Filled.Email" Class="mr-2" />
+                                <MudText>Email</MudText>
+                            </div>
+                        </TitleContent>
+                        <ChildContent>
+                            <PersonaEmail EntitaAziendaleId="@Id" 
+                                        IsReadOnly="false" 
+                                        OnDataChanged="OnContattiChanged" />
+                        </ChildContent>
+                    </MudExpansionPanel>
+
+                    <!-- Panel Telefoni -->
+                    <MudExpansionPanel Text="Telefoni" IsInitiallyExpanded="false">
+                        <TitleContent>
+                            <div class="d-flex align-center">
+                                <MudIcon Icon="@Icons.Material.Filled.Phone" Class="mr-2" />
+                                <MudText>Telefoni</MudText>
+                            </div>
+                        </TitleContent>
+                        <ChildContent>
+                            <PersonaTelefono EntitaAziendaleId="@Id" 
+                                           IsReadOnly="false" 
+                                           OnDataChanged="OnContattiChanged" />
+                        </ChildContent>
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+
+                <MudDivider Class="my-4" />
+
+                <!-- Pulsanti Azione -->
+                <MudGrid>
+                    <MudItem xs="12" Class="d-flex justify-space-between">
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Default"
+                                   StartIcon="@Icons.Material.Filled.ArrowBack"
+                                   OnClick="@(() => Navigation.NavigateTo("/persone"))"
+                                   Disabled="@isSaving">
+                            Annulla
+                        </MudButton>
+
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.Save"
+                                   ButtonType="ButtonType.Submit"
+                                   Disabled="@isSaving">
+                            @if (isSaving)
+                            {
+                                <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                                <span>Salvataggio...</span>
+                            }
+                            else
+                            {
+                                <span>Salva Modifiche</span>
+                            }
+                        </MudButton>
+                    </MudItem>
+                </MudGrid>
+
+                <!-- Errori di Validazione -->
+                <MudItem xs="12" Class="mt-4">
+                    <ValidationSummary />
+                </MudItem>
+            </EditForm>
+        </MudPaper>
+    }
+</MudContainer>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private UpdatePersonaRequest? model;
+    private bool isLoading = true;
+    private bool isSaving = false;
+    private string personaName = string.Empty;
+
+    private List<BreadcrumbItem> _breadcrumbItems = new()
+    {
+        new BreadcrumbItem("Home", href: "/"),
+        new BreadcrumbItem("Persone", href: "/persone"),
+        new BreadcrumbItem("Modifica", href: null, disabled: true)
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPersonaAsync();
+    }
+
+    private async Task LoadPersonaAsync()
+    {
+        try
+        {
+            isLoading = true;
+            StateHasChanged();
+
+            Logger.LogInformation("Caricamento persona ID: {Id}", Id);
+
+            var persona = await PersoneService.GetPersonaByIdAsync(Id);
+
+            if (persona != null)
+            {
+                // Mappa PersonaResponse a UpdatePersonaRequest
+                model = new UpdatePersonaRequest
+                {
+                    EntitaAziendaleId = persona.EntitaAziendaleId,
+                    Nome = persona.Nome,
+                    Cognome = persona.Cognome,
+                    CodiceFiscale = persona.CodiceFiscale,
+                    Genere = persona.Genere,
+                    DataNascita = persona.DataNascita,
+                    LuogoNascita = persona.LuogoNascita,
+                    Qualifica = persona.Qualifica,
+                    Titolo = persona.Titolo,
+                    PrivacyConsent = persona.PrivacyConsent,
+                    DataConsensoPrivacy = persona.DataConsensoPrivacy,
+                    Note = persona.Note
+                };
+
+                personaName = $"{persona.Nome} {persona.Cognome}";
+
+                // Aggiorna breadcrumb
+                _breadcrumbItems[2] = new BreadcrumbItem($"Modifica {personaName}", href: null, disabled: true);
+            }
+            else
+            {
+                Snackbar.Add("Persona non trovata", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Errore nel caricamento della persona ID: {Id}", Id);
+            Snackbar.Add($"Errore: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (model == null) return;
+
+        try
+        {
+            isSaving = true;
+            StateHasChanged();
+
+            Logger.LogInformation("Aggiornamento persona ID: {Id}", Id);
+
+            var result = await PersoneService.UpdatePersonaAsync(Id, model);
+
+            if (result != null)
+            {
+                Snackbar.Add($"Persona '{result.Nome} {result.Cognome}' aggiornata con successo!", Severity.Success);
+
+                // Attendi un attimo per mostrare il messaggio
+                await Task.Delay(500);
+
+                // Naviga alla lista
+                Navigation.NavigateTo("/persone");
+            }
+            else
+            {
+                Snackbar.Add("Errore durante l'aggiornamento della persona. Riprova.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Errore nell'aggiornamento della persona ID: {Id}", Id);
+            Snackbar.Add($"Errore: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isSaving = false;
+            StateHasChanged();
+        }
+    }
+
+    private void OnContattiChanged()
+    {
+        // Callback invocato quando i contatti vengono modificati
+        // Può essere utilizzato per aggiornare stato o eseguire altre azioni
+        Logger.LogInformation("Contatti modificati per persona ID: {Id}", Id);
+    }
+}

@@ -1,0 +1,142 @@
+@using Accredia.GestioneAnagrafica.Web.Themes
+
+<footer style="background-color: @AccrediaTheme.Grafite; color: @AccrediaTheme.Bianco; padding: 3rem 0 1rem 0; margin-top: auto;">
+    <MudContainer MaxWidth="MaxWidth.Large">
+        <MudGrid>
+            
+            <!-- Company Info Section -->
+            <MudItem xs="12" md="4">
+                <MudText Typo="Typo.h6" Style="@($"color: {AccrediaTheme.Ocra}; margin-bottom: 1rem; font-weight: 600;")">
+                    Accredia
+                </MudText>
+                <MudText Typo="Typo.body2" Style="color: rgba(255,255,255,0.8); line-height: 1.6;">
+                    Ente Italiano di Accreditamento
+                </MudText>
+                <MudText Typo="Typo.body2" Style="color: rgba(255,255,255,0.6); margin-top: 0.5rem; font-size: 0.85rem;">
+                    L'unico organismo nazionale autorizzato dallo Stato 
+                    a svolgere attività di accreditamento.
+                </MudText>
+            </MudItem>
+            
+            <!-- Contact Info Section -->
+            <MudItem xs="12" md="4">
+                <MudText Typo="Typo.subtitle2" Style="@($"color: {AccrediaTheme.Ocra}; margin-bottom: 1rem; font-weight: 600;")">
+                    Contatti
+                </MudText>
+                <MudStack Spacing="1">
+                    <MudText Typo="Typo.body2" Style="color: rgba(255,255,255,0.8); display: flex; align-items: start; gap: 0.5rem;">
+                        <MudIcon Icon="@Icons.Material.Filled.LocationOn" Size="Size.Small" Style="margin-top: 2px;" />
+                        <span style="line-height: 1.5;">
+                            @ContactAddress
+                        </span>
+                    </MudText>
+                    <MudText Typo="Typo.body2" Style="color: rgba(255,255,255,0.8); display: flex; align-items: center; gap: 0.5rem;">
+                        <MudIcon Icon="@Icons.Material.Filled.Phone" Size="Size.Small" />
+                        @ContactPhone
+                    </MudText>
+                    <MudText Typo="Typo.body2" Style="color: rgba(255,255,255,0.8); display: flex; align-items: center; gap: 0.5rem;">
+                        <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Small" />
+                        @ContactEmail
+                    </MudText>
+                </MudStack>
+            </MudItem>
+            
+            <!-- Useful Links Section -->
+            <MudItem xs="12" md="4">
+                <MudText Typo="Typo.subtitle2" Style="@($"color: {AccrediaTheme.Ocra}; margin-bottom: 1rem; font-weight: 600;")">
+                    Link Utili
+                </MudText>
+                <MudStack Spacing="1">
+                    @foreach (var link in FooterLinks)
+                    {
+                        <MudLink Href="@link.Url" 
+                                 Target="@(link.OpenInNewTab ? "_blank" : "_self")"
+                                 Style="color: rgba(255,255,255,0.8); text-decoration: none; transition: color 0.3s ease;"
+                                 Class="footer-link">
+                            @link.Text
+                            @if (link.OpenInNewTab)
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.OpenInNew" Size="Size.Small" Style="margin-left: 0.25rem; font-size: 0.875rem;" />
+                            }
+                        </MudLink>
+                    }
+                </MudStack>
+            </MudItem>
+            
+        </MudGrid>
+        
+        <!-- Divider -->
+        <MudDivider Style="margin: 2rem 0 1rem 0; background-color: rgba(255,255,255,0.2);" />
+        
+        <!-- Copyright Section -->
+        <MudText Typo="Typo.caption" 
+                 Align="Align.Center" 
+                 Style="color: rgba(255,255,255,0.6);">
+            © @DateTime.Now.Year Accredia - Tutti i diritti riservati | 
+            <MudLink Href="/privacy" Style="color: rgba(255,255,255,0.6); text-decoration: none;">
+                Privacy Policy
+            </MudLink> | 
+            <MudLink Href="/cookie-policy" Style="color: rgba(255,255,255,0.6); text-decoration: none;">
+                Cookie Policy
+            </MudLink>
+        </MudText>
+    </MudContainer>
+</footer>
+
+<style>
+    .footer-link:hover {
+        color: @AccrediaTheme.Ocra !important;
+    }
+</style>
+
+@code {
+    /// <summary>
+    /// Indirizzo di contatto
+    /// </summary>
+    [Parameter]
+    public string ContactAddress { get; set; } = "Via Guglielmo Saliceto, 7/9\n00161 Roma, Italia";
+
+    /// <summary>
+    /// Numero di telefono
+    /// </summary>
+    [Parameter]
+    public string ContactPhone { get; set; } = "+39 06 844099.1";
+
+    /// <summary>
+    /// Email di contatto
+    /// </summary>
+    [Parameter]
+    public string ContactEmail { get; set; } = "info@accredia.it";
+
+    /// <summary>
+    /// Lista di link da visualizzare nel footer
+    /// </summary>
+    [Parameter]
+    public List<FooterLink> FooterLinks { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        // Default links se non forniti
+        if (FooterLinks.Count == 0)
+        {
+            FooterLinks = new List<FooterLink>
+            {
+                new() { Text = "Sito Ufficiale", Url = "https://www.accredia.it", OpenInNewTab = true },
+                new() { Text = "Area Riservata", Url = "https://servizi.accredia.it", OpenInNewTab = true },
+                new() { Text = "Normativa", Url = "/normativa", OpenInNewTab = false },
+                new() { Text = "FAQ", Url = "/faq", OpenInNewTab = false },
+                new() { Text = "Contattaci", Url = "/contatti", OpenInNewTab = false }
+            };
+        }
+    }
+
+    /// <summary>
+    /// Classe per rappresentare un link nel footer
+    /// </summary>
+    public class FooterLink
+    {
+        public string Text { get; set; } = "";
+        public string Url { get; set; } = "";
+        public bool OpenInNewTab { get; set; } = false;
+    }
+}

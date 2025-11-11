@@ -1,0 +1,193 @@
+@page "/personeRowItem"
+@using Accredia.GestioneAnagrafica.Web.Services
+@using Accredia.GestioneAnagrafica.Shared.DTOs
+@inject IPersoneService PersoneService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+@* @inject ILogger<Persone> Logger *@
+
+<PageTitle>Persone - Accredia Gestione Anagrafica</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-4">
+    <MudText Typo="Typo.h4" Class="mb-4">
+        <MudIcon Icon="@Icons.Material.Filled.People" Class="mr-2" />
+        Gestione Persone (Vista compatta)
+    </MudText>
+
+    <!-- Toolbar -->
+    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4">
+        <MudTextField @bind-Value="globalSearch"
+                      Placeholder="Ricerca globale (Nome, Cognome, CF...)"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"
+                      Immediate="true"
+                      DebounceInterval="300"
+                      Style="max-width:400px;" />
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.Add"
+                   OnClick="NavigateToCreate">
+            Aggiungi Persona
+        </MudButton>
+    </MudStack>
+
+    @if (isLoading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
+        <MudText Align="Align.Center">Caricamento in corso...</MudText>
+    }
+    else if (persone == null || !persone.Any())
+    {
+        <MudAlert Severity="Severity.Info" Class="my-4">
+            Nessuna persona trovata.
+        </MudAlert>
+    }
+    else
+    {
+        <MudList Class="rounded-lg border pa-2" Dense="true">
+            @foreach (var persona in persone.Where(QuickFilter))
+            {
+                <MudListItem Class="hover:shadow-sm transition-all duration-200 rounded-md mb-1 pa-2 border border-gray-100"
+                             Style="@RowStyleFunc(persona, 0)">
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                        <!-- Avatar + Nome -->
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                            <MudAvatar Text="@persona.Nome?.FirstOrDefault().ToString().ToUpper()" Color="Color.Primary" Size="Size.Medium" />
+                            <MudStack>
+                                <MudText Typo="Typo.subtitle1" Class="font-semibold">@persona.NomeCompleto</MudText>
+                                <MudText Typo="Typo.body2" Color="Color.Secondary">@persona.CodiceFiscale</MudText>
+                            </MudStack>
+                        </MudStack>
+
+                        <!-- Chips e Info -->
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                            @if (!string.IsNullOrEmpty(persona.Qualifica))
+                            {
+                                <MudChip Color="Color.Success" Size="Size.Small">@persona.Qualifica</MudChip>
+                            }
+
+                            @if (persona.Genere == "M")
+                            {
+                                <MudChip Color="Color.Info" Size="Size.Small">M</MudChip>
+                            }
+                            else if (persona.Genere == "F")
+                            {
+                                <MudChip Color="Color.Secondary" Size="Size.Small">F</MudChip>
+                            }
+
+                            <MudIcon Icon="@(persona.PrivacyConsent? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)"
+                                     Color="@(persona.PrivacyConsent ? Color.Success : Color.Error)"
+                                     Size="Size.Small" />
+
+                            <MudChip Size="Size.Small"
+                                     Color="@(
+                                     persona.Stato == "Attivo" ? Color.Success :
+                                     persona.Stato == "Eliminato" ? Color.Error : Color.Warning)">
+                        @persona.Stato
+                    </MudChip>
+                </MudStack>
+
+                        <!-- Menu Azioni -->
+                        <MudMenu Icon="@Icons.Material.Filled.MoreVert"
+                                 Dense="true"
+                                 AnchorOrigin="Origin.BottomRight"
+                                 TransformOrigin="Origin.TopRight">
+                            <MudMenuItem Icon="@Icons.Material.Filled.Visibility"
+                                         IconColor="Color.Primary"
+                                         OnClick="@(() => NavigateToDetails(persona.EntitaAziendaleId))">
+                                Visualizza
+                            </MudMenuItem>
+                            <MudMenuItem Icon="@Icons.Material.Filled.Edit"
+                                         IconColor="Color.Secondary"
+                                         OnClick="@(() => NavigateToEdit(persona.EntitaAziendaleId))">
+                                Modifica
+                            </MudMenuItem>
+                            <MudDivider />
+                            <MudMenuItem Icon="@Icons.Material.Filled.Delete"
+                                         IconColor="Color.Error"
+                                         OnClick="@(() => ConfirmDelete(persona))">
+                                Elimina
+                            </MudMenuItem>
+                        </MudMenu>
+                    </MudStack>
+                </MudListItem>
+                }
+        </MudList>
+    }
+</MudContainer>
+
+@code {
+    private List<PersonaGridItemResponse> persone = new();
+    private bool isLoading = true;
+    private string globalSearch = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPersoneAsync();
+    }
+
+    private async Task LoadPersoneAsync()
+    {
+        try
+        {
+            isLoading = true;
+            var result = await PersoneService.GetAllPersoneAsync();
+            persone = result ?? new();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Errore nel caricamento: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private bool QuickFilter(PersonaGridItemResponse persona)
+    {
+        if (string.IsNullOrWhiteSpace(globalSearch)) return true;
+        var filter = globalSearch.Trim().ToLower();
+        return (persona.Nome?.ToLower().Contains(filter) ?? false)
+            || (persona.Cognome?.ToLower().Contains(filter) ?? false)
+            || (persona.CodiceFiscale?.ToLower().Contains(filter) ?? false)
+            || (persona.Qualifica?.ToLower().Contains(filter) ?? false);
+    }
+
+    private string RowStyleFunc(PersonaGridItemResponse persona, int rowNumber)
+    {
+        var stato = persona.Stato?.ToLowerInvariant();
+        return stato switch
+        {
+            "attivo" => "background-color: rgba(76,175,80,0.05);",
+            "sospeso" => "background-color: rgba(255,235,59,0.05);",
+            "eliminato" => "background-color: rgba(244,67,54,0.05);",
+            _ => string.Empty
+        };
+    }
+
+    private void NavigateToCreate() => Navigation.NavigateTo("/persone/create");
+    private void NavigateToDetails(int id) => Navigation.NavigateTo($"/persone/{id}");
+    private void NavigateToEdit(int id) => Navigation.NavigateTo($"/persone/{id}/edit");
+
+    private async Task ConfirmDelete(PersonaGridItemResponse persona)
+    {
+        var parameters = new DialogParameters
+        {
+            ["ContentText"] = $"Sei sicuro di voler eliminare '{persona.NomeCompleto}'?",
+            ["ButtonText"] = "Elimina",
+            ["Color"] = Color.Error
+        };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small };
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Conferma Eliminazione", parameters, options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await PersoneService.DeletePersonaAsync(persona.EntitaAziendaleId);
+            Snackbar.Add("Persona eliminata", Severity.Success);
+            await LoadPersoneAsync();
+        }
+    }
+}

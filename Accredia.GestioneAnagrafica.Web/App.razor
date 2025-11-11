@@ -1,0 +1,36 @@
+@if (isLoading)
+{
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+}
+else
+{
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <MudContainer MaxWidth="MaxWidth.Small" Class="py-16 px-4">
+                    <MudPaper Elevation="0">
+                        <MudText Typo="Typo.h3" Align="Align.Center">404 - Página No Encontrada</MudText>
+                        <MudText Typo="Typo.body1" Align="Align.Center" Class="mt-4">Lo sentimos, la página que buscas no existe.</MudText>
+                    </MudPaper>
+                </MudContainer>
+            </LayoutView>
+        </NotFound>
+    </Router>
+}
+
+@code {
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(100);
+        isLoading = false;
+    }
+}

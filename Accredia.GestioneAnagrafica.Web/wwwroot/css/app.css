@@ -1,0 +1,710 @@
+/* ==================== ACCREDIA CORPORATE BRANDING ==================== */
+
+:root {
+    /* Colori Principali Accredia */
+    --accredia-primary: #003366;
+    --accredia-primary-dark: #001f3f;
+    --accredia-primary-light: #0052cc;
+    --accredia-secondary: #0066CC;
+    --accredia-accent: #FF6B35;
+    
+    /* Colori Neutri */
+    --color-success: #28A745;
+    --color-warning: #FFC107;
+    --color-error: #DC3545;
+    --color-info: #17A2B8;
+    
+    /* Testo e Background */
+    --text-primary: #212121;
+    --text-secondary: #757575;
+    --bg-primary: #FAFAFA;
+    --bg-secondary: #FFFFFF;
+    
+    /* Font Family Corporate */
+    --font-family-base: 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
+    --font-family-mono: 'Courier New', monospace;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Border Radius */
+    --border-radius-sm: 2px;
+    --border-radius-md: 4px;
+    --border-radius-lg: 8px;
+    
+    /* Box Shadow */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================== GLOBAL STYLES ==================== */
+
+html, body {
+    font-family: var(--font-family-base);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==================== ACCREDIA COMPONENTS ==================== */
+
+/* Logo Container */
+.accredia-logo {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.accredia-logo-icon {
+    width: 32px;
+    height: 32px;
+    background-color: var(--accredia-secondary);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+}
+
+/* Branding Header */
+.accredia-header {
+    background: linear-gradient(135deg, var(--accredia-primary) 0%, var(--accredia-primary-dark) 100%);
+    color: white;
+    padding: var(--spacing-lg);
+    border-bottom: 4px solid var(--accredia-secondary);
+}
+
+.accredia-header h1 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* Primary Button */
+.btn-accredia-primary {
+    background-color: var(--accredia-primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-accredia-primary:hover {
+    background-color: var(--accredia-primary-dark);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.btn-accredia-primary:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Secondary Button */
+.btn-accredia-secondary {
+    background-color: var(--accredia-secondary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-accredia-secondary:hover {
+    background-color: var(--accredia-primary);
+    box-shadow: var(--shadow-md);
+}
+
+/* Outline Button */
+.btn-accredia-outline {
+    background-color: transparent;
+    color: var(--accredia-primary);
+    border: 2px solid var(--accredia-primary);
+    padding: 0.65rem 1.4rem;
+    border-radius: var(--border-radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-accredia-outline:hover {
+    background-color: var(--accredia-primary);
+    color: white;
+}
+
+/* Accredia Card */
+.accredia-card {
+    background: white;
+    border: 1px solid #E0E0E0;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    transition: all 0.3s ease;
+}
+
+.accredia-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--accredia-secondary);
+}
+
+.accredia-card-header {
+    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--accredia-primary);
+}
+
+.accredia-card-header h3 {
+    margin: 0;
+    color: var(--accredia-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.accredia-card-body {
+    margin: 0;
+}
+
+/* Alert Styles */
+.alert-info {
+    background-color: #D1ECF1;
+    border: 1px solid #BEE5EB;
+    color: #0C5460;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.alert-success {
+    background-color: #D4EDDA;
+    border: 1px solid #C3E6CB;
+    color: #155724;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.alert-warning {
+    background-color: #FFF3CD;
+    border: 1px solid #FFEAA7;
+    color: #856404;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.alert-error {
+    background-color: #F8D7DA;
+    border: 1px solid #F5C6CB;
+    color: #721C24;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Badge Styles */
+.badge-accredia {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    background-color: var(--accredia-primary);
+    color: white;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.badge-secondary {
+    background-color: var(--accredia-secondary);
+}
+
+.badge-success {
+    background-color: var(--color-success);
+}
+
+.badge-warning {
+    background-color: var(--color-warning);
+    color: black;
+}
+
+.badge-error {
+    background-color: var(--color-error);
+}
+
+/* Divider */
+.divider-accredia {
+    border: 0;
+    border-top: 2px solid var(--accredia-primary);
+    margin: var(--spacing-lg) 0;
+    opacity: 0.6;
+}
+
+/* Link Styles */
+a {
+    color: var(--accredia-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--accredia-secondary);
+    text-decoration: underline;
+}
+
+a:visited {
+    color: var(--accredia-primary-dark);
+}
+
+/* ==================== SPINNER AND LOADING ==================== */
+
+.spinner-border {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: text-bottom;
+    border: 0.25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: spinner-border 0.75s linear infinite;
+    animation: spinner-border 0.75s linear infinite;
+}
+
+@-webkit-keyframes spinner-border {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spinner-border {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.loading-spinner {
+    color: var(--accredia-primary);
+    font-size: 2rem;
+}
+
+/* ==================== ERROR HANDLING ==================== */
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.0rem;
+    position: fixed;
+    right: 0;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+.blazor-error-boundary {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 2px solid #ff6a00;
+    border-radius: 5px;
+    box-shadow: 0 0px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    padding: 20px;
+    width: 100%;
+}
+
+.blazor-error-boundary::after {
+    content: "An error has occurred.";
+}
+
+/* ==================== LAYOUT STYLES ==================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Main Layout Container */
+.app-layout {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Sidebar Navigation */
+.app-sidebar {
+    width: 280px;
+    background: linear-gradient(135deg, var(--accredia-primary) 0%, var(--accredia-primary-dark) 100%);
+    color: white;
+    overflow-y: auto;
+    flex-shrink: 0;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Main Content Area */
+.app-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Header Bar */
+.app-header {
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid #e0e0e0;
+    padding: var(--spacing-md) var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 60px;
+    flex-shrink: 0;
+}
+
+.app-auth-info {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Main Content */
+.app-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-xl);
+    background-color: var(--bg-primary);
+}
+
+/* Navigation Styles */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.nav-brand {
+    padding: var(--spacing-lg);
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: var(--spacing-md) 0;
+    margin: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+    width: 100%;
+    cursor: pointer;
+}
+
+.nav-link:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-left-color: white;
+}
+
+.nav-link.active {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-left-color: white;
+    font-weight: 600;
+}
+
+.nav-link .oi {
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+    width: 1.2rem;
+}
+
+/* Card Styles */
+.card {
+    background: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.card-header {
+    background-color: var(--accredia-secondary);
+    color: white;
+    padding: var(--spacing-md);
+    border-bottom: 1px solid #e0e0e0;
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+}
+
+.card-body {
+    padding: var(--spacing-lg);
+}
+
+/* Button Styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--accredia-secondary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.btn:hover {
+    background-color: var(--accredia-primary);
+    box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn .oi {
+    margin-right: 0.5rem;
+}
+
+/* Container Styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+}
+
+.col-md-8 {
+    flex: 0 0 66.66%;
+    padding: 0.5rem;
+}
+
+.offset-md-2 {
+    margin-left: 16.66%;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--accredia-primary);
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.75rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+}
+
+h5 {
+    font-size: 1.1rem;
+}
+
+h6 {
+    font-size: 1rem;
+}
+
+p {
+    margin-bottom: var(--spacing-md);
+}
+
+/* Scrollbar Styling */
+.app-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.app-sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.app-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.app-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+
+@media (max-width: 768px) {
+    .app-layout {
+        flex-direction: column;
+    }
+
+    .app-sidebar {
+        width: 100%;
+        max-height: 80px;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    .col-md-8 {
+        flex: 0 0 100%;
+    }
+
+    .offset-md-2 {
+        margin-left: 0;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.35rem;
+    }
+
+    h3 {
+        font-size: 1.15rem;
+    }
+
+    .btn {
+        padding: 0.65rem 1.25rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-content {
+        padding: var(--spacing-md);
+    }
+
+    .accredia-card {
+        padding: var(--spacing-md);
+    }
+
+    h1 {
+        font-size: 1.25rem;
+    }
+
+    h2 {
+        font-size: 1.1rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+    }
+}
+
+/* ==================== PRINT STYLES ==================== */
+
+@media print {
+    .app-sidebar,
+    .app-header,
+    .nav-link,
+    .btn {
+        display: none;
+    }
+
+    body {
+        background-color: white;
+    }
+
+    .app-content {
+        padding: 0;
+    }
+}
+
+/* ==================== DARK MODE SUPPORT ==================== */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-primary: #121212;
+        --bg-secondary: #1E1E1E;
+        --text-primary: #FFFFFF;
+        --text-secondary: #B0B0B0;
+    }
+
+    html, body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+    }
+
+    .accredia-card {
+        background: #1E1E1E;
+        border-color: #373737;
+    }
+
+    .card {
+        background: #1E1E1E;
+    }
+
+    .card-header {
+        background-color: var(--accredia-primary);
+    }
+}

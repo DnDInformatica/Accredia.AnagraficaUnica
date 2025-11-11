@@ -1,0 +1,465 @@
+@page "/corporate-showcase"
+@using Accredia.GestioneAnagrafica.Web.Themes
+@using MudBlazor
+
+<PageTitle>Accredia Corporate Showcase</PageTitle>
+
+<!-- Hero Section Corporate -->
+<div style="background: linear-gradient(135deg, @AccrediaTheme.Grafite 0%, #0f0f1e 100%); color: white; padding: 3rem 2rem; border-radius: 8px; margin-bottom: 2rem;">
+    <MudContainer MaxWidth="MaxWidth.Large">
+        <MudText Typo="Typo.h3" Style="font-weight: 700; margin-bottom: 1rem;">
+            Accredia Corporate Design System
+        </MudText>
+        <MudText Typo="Typo.body1" Style="color: rgba(255,255,255,0.9); max-width: 800px;">
+            Questa pagina dimostra l'implementazione completa dello skill corporate Accredia con MudBlazor.
+            Tutti i componenti seguono le linee guida di branding e accessibilità WCAG 2.1 AA.
+        </MudText>
+    </MudContainer>
+</div>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-6">
+    
+    <!-- Sezione: Palette Colori -->
+    <MudCard Class="mb-6" Elevation="2">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5" Color="Color.Primary">
+                    🎨 Palette Colori Corporate
+                </MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudGrid>
+                <!-- Grafite (Primary) -->
+                <MudItem xs="6" sm="3">
+                    <div style="@($"background-color: {AccrediaTheme.Grafite}; height: 100px; border-radius: 8px; margin-bottom: 0.5rem;")"></div>
+                    <MudText Typo="Typo.subtitle2">Grafite</MudText>
+                    <MudText Typo="Typo.caption">@AccrediaTheme.Grafite</MudText>
+                    <MudChip Size="Size.Small" Color="Color.Primary">Primary</MudChip>
+                </MudItem>
+                
+                <!-- Ocra (Secondary) -->
+                <MudItem xs="6" sm="3">
+                    <div style="@($"background-color: {AccrediaTheme.Ocra}; height: 100px; border-radius: 8px; margin-bottom: 0.5rem;")"></div>
+                    <MudText Typo="Typo.subtitle2">Ocra</MudText>
+                    <MudText Typo="Typo.caption">@AccrediaTheme.Ocra</MudText>
+                    <MudChip Size="Size.Small" Color="Color.Secondary">Secondary</MudChip>
+                </MudItem>
+                
+                <!-- Écru (Background) -->
+                <MudItem xs="6" sm="3">
+                    <div style="@($"background-color: {AccrediaTheme.Écru}; height: 100px; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid #e0e0e0;")"></div>
+                    <MudText Typo="Typo.subtitle2">Écru</MudText>
+                    <MudText Typo="Typo.caption">@AccrediaTheme.Écru</MudText>
+                    <MudChip Size="Size.Small" Variant="Variant.Outlined">Background</MudChip>
+                </MudItem>
+                
+                <!-- Bianco (Surface) -->
+                <MudItem xs="6" sm="3">
+                    <div style="@($"background-color: {AccrediaTheme.Bianco}; height: 100px; border-radius: 8px; margin-bottom: 0.5rem; border: 1px solid #e0e0e0;")"></div>
+                    <MudText Typo="Typo.subtitle2">Bianco</MudText>
+                    <MudText Typo="Typo.caption">@AccrediaTheme.Bianco</MudText>
+                    <MudChip Size="Size.Small" Variant="Variant.Outlined">Surface</MudChip>
+                </MudItem>
+            </MudGrid>
+            
+            <MudDivider Class="my-4" />
+            
+            <!-- Colori Semantici -->
+            <MudText Typo="Typo.h6" Class="mb-3">Colori Semantici</MudText>
+            <MudGrid>
+                <MudItem xs="6" sm="3">
+                    <div style="@($"background-color: {AccrediaTheme.SuccessGreen}; height: 60px; border-radius: 8px; margin-bottom: 0.5rem;")"></div>
+                    <MudChip Size="Size.Small" Color="Color.Success">Success</MudChip>
+                </MudItem>
+                <MudItem xs="6" sm="3">
+                    <div style="@($"background-color: {AccrediaTheme.WarningOrange}; height: 60px; border-radius: 8px; margin-bottom: 0.5rem;")"></div>
+                    <MudChip Size="Size.Small" Color="Color.Warning">Warning</MudChip>
+                </MudItem>
+                <MudItem xs="6" sm="3">
+                    <div style="@($"background-color: {AccrediaTheme.ErrorRed}; height: 60px; border-radius: 8px; margin-bottom: 0.5rem;")"></div>
+                    <MudChip Size="Size.Small" Color="Color.Error">Error</MudChip>
+                </MudItem>
+                <MudItem xs="6" sm="3">
+                    <div style="@($"background-color: {AccrediaTheme.InfoBlue}; height: 60px; border-radius: 8px; margin-bottom: 0.5rem;")"></div>
+                    <MudChip Size="Size.Small" Color="Color.Info">Info</MudChip>
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione: Tipografia -->
+    <MudCard Class="mb-6" Elevation="2">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5" Color="Color.Primary">
+                    🔤 Sistema Tipografico
+                </MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText Typo="Typo.h1" Class="mb-2">Heading 1 - Montserrat Bold 2.5rem</MudText>
+            <MudText Typo="Typo.h2" Class="mb-2">Heading 2 - Montserrat Bold 2rem</MudText>
+            <MudText Typo="Typo.h3" Class="mb-2">Heading 3 - Montserrat Bold 1.75rem</MudText>
+            <MudText Typo="Typo.h4" Class="mb-2">Heading 4 - Montserrat Bold 1.5rem</MudText>
+            <MudText Typo="Typo.h5" Class="mb-2">Heading 5 - Montserrat 1.25rem</MudText>
+            <MudText Typo="Typo.h6" Class="mb-3">Heading 6 - Montserrat 1rem</MudText>
+            
+            <MudDivider Class="my-3" />
+            
+            <MudText Typo="Typo.body1" Class="mb-2">
+                <strong>Body 1 (Open Sans):</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </MudText>
+            <MudText Typo="Typo.body2" Class="mb-2">
+                <strong>Body 2 (Open Sans):</strong> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+            </MudText>
+            <MudText Typo="Typo.caption" Class="mb-2">
+                <strong>Caption:</strong> Testo piccolo per didascalie e note
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione: Bottoni -->
+    <MudCard Class="mb-6" Elevation="2">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5" Color="Color.Primary">
+                    🔘 Bottoni e Azioni
+                </MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Check">
+                    Primary
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary">
+                    Secondary
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary">
+                    Outlined
+                </MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Primary">
+                    Text
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.CheckCircle">
+                    Success
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Warning" StartIcon="@Icons.Material.Filled.Warning">
+                    Warning
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.Error">
+                    Error
+                </MudButton>
+            </MudStack>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione: Alerts -->
+    <MudCard Class="mb-6" Elevation="2">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5" Color="Color.Primary">
+                    ℹ️ Messaggi e Alert
+                </MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudStack Spacing="2">
+                <MudAlert Severity="Severity.Info" Variant="Variant.Filled">
+                    <strong>Info:</strong> Questo è un messaggio informativo per l'utente.
+                </MudAlert>
+                <MudAlert Severity="Severity.Success" Variant="Variant.Filled">
+                    <strong>Successo:</strong> Operazione completata con successo!
+                </MudAlert>
+                <MudAlert Severity="Severity.Warning" Variant="Variant.Filled">
+                    <strong>Attenzione:</strong> Prestare attenzione a questa operazione.
+                </MudAlert>
+                <MudAlert Severity="Severity.Error" Variant="Variant.Filled">
+                    <strong>Errore:</strong> Si è verificato un errore durante l'operazione.
+                </MudAlert>
+            </MudStack>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione: Form Elements -->
+    <MudCard Class="mb-6" Elevation="2">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5" Color="Color.Primary">
+                    📝 Elementi Form
+                </MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <EditForm Model="@formModel" OnValidSubmit="@HandleFormSubmit">
+                <MudGrid>
+                    <MudItem xs="12" md="6">
+                        <MudTextField @bind-Value="formModel.Nome" 
+                                      Label="Nome" 
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      FullWidth="true" />
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudTextField @bind-Value="formModel.Cognome" 
+                                      Label="Cognome" 
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      FullWidth="true" />
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudTextField @bind-Value="formModel.Email" 
+                                      Label="Email" 
+                                      InputType="InputType.Email"
+                                      Variant="Variant.Outlined"
+                                      Margin="Margin.Dense"
+                                      FullWidth="true" />
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudSelect @bind-Value="formModel.Categoria" 
+                                   Label="Categoria"
+                                   Variant="Variant.Outlined"
+                                   Margin="Margin.Dense"
+                                   FullWidth="true">
+                            <MudSelectItem Value="@("Categoria A")">Categoria A</MudSelectItem>
+                            <MudSelectItem Value="@("Categoria B")">Categoria B</MudSelectItem>
+                            <MudSelectItem Value="@("Categoria C")">Categoria C</MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudCheckBox @bind-Value="formModel.AccettoTermini" 
+                                     Label="Accetto i termini e le condizioni"
+                                     Color="Color.Primary" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudStack Row="true" Spacing="2">
+                            <MudButton ButtonType="ButtonType.Submit" 
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.Send">
+                                Invia
+                            </MudButton>
+                            <MudButton ButtonType="ButtonType.Reset"
+                                       Variant="Variant.Outlined"
+                                       Color="Color.Primary">
+                                Reset
+                            </MudButton>
+                        </MudStack>
+                    </MudItem>
+                </MudGrid>
+            </EditForm>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione: Tabelle -->
+    <MudCard Class="mb-6" Elevation="2">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5" Color="Color.Primary">
+                    📊 Tabelle Dati
+                </MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudTable Items="@sampleData" 
+                      Hover="true" 
+                      Striped="true" 
+                      Dense="true"
+                      Elevation="0">
+                <HeaderContent>
+                    <MudTh>ID</MudTh>
+                    <MudTh>Nome</MudTh>
+                    <MudTh>Categoria</MudTh>
+                    <MudTh>Status</MudTh>
+                    <MudTh>Azioni</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>@context.Id</MudTd>
+                    <MudTd>@context.Nome</MudTd>
+                    <MudTd>@context.Categoria</MudTd>
+                    <MudTd>
+                        <MudChip Size="Size.Small" 
+                                 Color="@GetStatusColor(context.Status)">
+                            @context.Status
+                        </MudChip>
+                    </MudTd>
+                    <MudTd>
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit" 
+                                       Size="Size.Small" 
+                                       Color="Color.Primary" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" 
+                                       Size="Size.Small" 
+                                       Color="Color.Error" />
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione: Cards -->
+    <MudCard Class="mb-6" Elevation="2">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5" Color="Color.Primary">
+                    🗂️ Card Components
+                </MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudCard Elevation="3">
+                        <MudCardMedia Image="https://via.placeholder.com/400x200/1a1a2e/d4a574?text=Accredia" Height="200" />
+                        <MudCardContent>
+                            <MudText Typo="Typo.h6">Card Titolo</MudText>
+                            <MudText Typo="Typo.body2">
+                                Questo è un esempio di card con immagine, titolo e contenuto.
+                            </MudText>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary">Dettagli</MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Secondary">Modifica</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+                
+                <MudItem xs="12" sm="6" md="4">
+                    <MudCard Elevation="3">
+                        <MudCardContent>
+                            <MudText Typo="Typo.h6" Color="Color.Primary">
+                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" />
+                                Card con Icona
+                            </MudText>
+                            <MudText Typo="Typo.body2" Class="mt-2">
+                                Card senza immagine ma con icona nel titolo.
+                            </MudText>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">
+                                Azione
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+                
+                <MudItem xs="12" sm="6" md="4">
+                    <MudCard Elevation="3" Style="@($"background: linear-gradient(135deg, {AccrediaTheme.Grafite} 0%, {AccrediaTheme.Ocra} 100%); color: white;")">
+                        <MudCardContent>
+                            <MudText Typo="Typo.h6" Style="color: white;">
+                                Card Gradient
+                            </MudText>
+                            <MudText Typo="Typo.body2" Style="color: rgba(255,255,255,0.9);" Class="mt-2">
+                                Card con gradiente corporate Accredia.
+                            </MudText>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Style="color: white;">Esplora</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione: Responsive Grid -->
+    <MudCard Class="mb-6" Elevation="2">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5" Color="Color.Primary">
+                    📱 Sistema Grid Responsive
+                </MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText Typo="Typo.body2" Class="mb-4">
+                Il sistema grid si adatta automaticamente ai breakpoint: 
+                <MudChip Size="Size.Small">xs: 0px</MudChip>
+                <MudChip Size="Size.Small">sm: 600px</MudChip>
+                <MudChip Size="Size.Small">md: 960px</MudChip>
+                <MudChip Size="Size.Small">lg: 1264px</MudChip>
+                <MudChip Size="Size.Small">xl: 1920px</MudChip>
+            </MudText>
+            <MudGrid>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudPaper Class="pa-4" Style="@($"background-color: {AccrediaTheme.Écru}; text-align: center;")">
+                        <MudText>xs=12 sm=6 md=4</MudText>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudPaper Class="pa-4" Style="@($"background-color: {AccrediaTheme.Écru}; text-align: center;")">
+                        <MudText>xs=12 sm=6 md=4</MudText>
+                    </MudPaper>
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudPaper Class="pa-4" Style="@($"background-color: {AccrediaTheme.Écru}; text-align: center;")">
+                        <MudText>xs=12 sm=6 md=4</MudText>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+
+</MudContainer>
+
+@code {
+    private FormModel formModel = new();
+    private List<DataItem> sampleData = new();
+
+    protected override void OnInitialized()
+    {
+        // Dati di esempio per la tabella
+        sampleData = new List<DataItem>
+        {
+            new() { Id = 1, Nome = "Elemento A", Categoria = "Cat 1", Status = "Attivo" },
+            new() { Id = 2, Nome = "Elemento B", Categoria = "Cat 2", Status = "In Revisione" },
+            new() { Id = 3, Nome = "Elemento C", Categoria = "Cat 1", Status = "Completato" },
+            new() { Id = 4, Nome = "Elemento D", Categoria = "Cat 3", Status = "Attivo" }
+        };
+    }
+
+    private async Task HandleFormSubmit()
+    {
+        await Task.Delay(500);
+        // Logica di submit
+    }
+
+    private Color GetStatusColor(string status) => status switch
+    {
+        "Attivo" => Color.Success,
+        "In Revisione" => Color.Warning,
+        "Completato" => Color.Info,
+        _ => Color.Default
+    };
+
+    public class FormModel
+    {
+        public string Nome { get; set; } = "";
+        public string Cognome { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Categoria { get; set; } = "";
+        public bool AccettoTermini { get; set; }
+    }
+
+    public class DataItem
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; } = "";
+        public string Categoria { get; set; } = "";
+        public string Status { get; set; } = "";
+    }
+}
+
+<style>
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-3 { margin-top: 0.75rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .my-3 { margin-top: 0.75rem; margin-bottom: 0.75rem; }
+    .my-4 { margin-top: 1rem; margin-bottom: 1rem; }
+    .pa-4 { padding: 1rem; }
+</style>

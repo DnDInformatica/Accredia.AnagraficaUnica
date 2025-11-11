@@ -1,0 +1,111 @@
+@using Accredia.GestioneAnagrafica.Web.Themes
+@using Microsoft.AspNetCore.Components.Authorization
+
+<MudAppBar Elevation="4" Style="@($"background-color: {AccrediaTheme.Grafite};")">
+    <div style="display: flex; align-items: center; width: 100%; padding: 0 1rem;">
+
+        <!-- Logo Section -->
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <!-- Logo Placeholder - sostituire con logo reale -->
+            <div style="@($"background-color: {AccrediaTheme.Ocra}; width: 50px; height: 50px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 1.2rem;")">
+                A
+            </div>
+            <MudText Typo="Typo.h6" Style="@($"color:y {AccrediaTheme.Bianco}; font-weight: 600;")">
+                @Title
+            </MudText>
+        </div>
+        
+        <!-- Spacer -->
+        <MudSpacer />
+        
+        <!-- Right Section -->
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            
+            @if (ShowNotifications)
+            {
+                <MudIconButton Icon="@Icons.Material.Filled.Notifications" 
+                               Color="Color.Inherit" 
+                               Edge="Edge.End" />
+            }
+            
+            @if (ShowUserMenu)
+            {
+                <AuthorizeView>
+                    <Authorized>
+                        <MudMenu Icon="@Icons.Material.Filled.AccountCircle" 
+                                 Color="Color.Inherit"
+                                 AnchorOrigin="Origin.BottomRight"
+                                 TransformOrigin="Origin.TopRight">
+                            <MudMenuItem Icon="@Icons.Material.Filled.Person">
+                                @context.User.Identity?.Name ?? "Utente"
+                            </MudMenuItem>
+                            <MudDivider />
+                            <MudMenuItem Icon="@Icons.Material.Filled.Settings" 
+                                         Href="/settings">
+                                Impostazioni
+                            </MudMenuItem>
+                            <MudMenuItem Icon="@Icons.Material.Filled.Logout" 
+                                         OnClick="@OnLogoutClick">
+                                Logout
+                            </MudMenuItem>
+                        </MudMenu>
+                    </Authorized>
+                    <NotAuthorized>
+                        <MudButton Variant="Variant.Text" 
+                                   Color="Color.Inherit"
+                                   Href="/login"
+                                   StartIcon="@Icons.Material.Filled.Login">
+                            Login
+                        </MudButton>
+                    </NotAuthorized>
+                </AuthorizeView>
+            }
+            
+            @if (ShowMenuToggle)
+            {
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" 
+                               Color="Color.Inherit" 
+                               Edge="Edge.End"
+                               OnClick="@OnMenuToggleClick" />
+            }
+        </div>
+    </div>
+</MudAppBar>
+
+@code {
+    /// <summary>
+    /// Titolo da visualizzare nella navbar
+    /// </summary>
+    [Parameter]
+    public string Title { get; set; } = "Accredia";
+
+    /// <summary>
+    /// Mostra il menu utente con profilo e logout
+    /// </summary>
+    [Parameter]
+    public bool ShowUserMenu { get; set; } = true;
+
+    /// <summary>
+    /// Mostra l'icona notifiche
+    /// </summary>
+    [Parameter]
+    public bool ShowNotifications { get; set; } = false;
+
+    /// <summary>
+    /// Mostra il pulsante toggle menu (per mobile)
+    /// </summary>
+    [Parameter]
+    public bool ShowMenuToggle { get; set; } = true;
+
+    /// <summary>
+    /// Callback quando viene cliccato il toggle menu
+    /// </summary>
+    [Parameter]
+    public EventCallback OnMenuToggleClick { get; set; }
+
+    /// <summary>
+    /// Callback quando viene cliccato logout
+    /// </summary>
+    [Parameter]
+    public EventCallback OnLogoutClick { get; set; }
+}

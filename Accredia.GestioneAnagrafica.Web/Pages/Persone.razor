@@ -1,0 +1,447 @@
+@page "/persone"
+@using Accredia.GestioneAnagrafica.Web.Services
+@using Accredia.GestioneAnagrafica.Shared.DTOs
+@inject IPersoneService PersoneService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+@inject ILogger<Persone> Logger
+
+<PageTitle>Persone - Accredia Gestione Anagrafica</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-4">
+    <MudText Typo="Typo.h4" Class="mb-4">
+        <MudIcon Icon="@Icons.Material.Filled.People" Class="mr-2" />
+        Gestione Persone
+    </MudText>
+
+    <MudCard>
+        <MudCardContent>
+            <!-- Toolbar con ricerca e opzioni -->
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4">
+                <MudTextField @bind-Value="globalSearch"
+                              Placeholder="Ricerca globale (Nome, Cognome, Codice Fiscale...)"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search"
+                              IconSize="Size.Medium"
+                              Style="max-width: 400px;"
+                              Immediate="true"
+                              DebounceInterval="300" />
+
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.Add"
+                           OnClick="NavigateToCreate">
+                    Aggiungi Persona
+                </MudButton>
+            </MudStack>
+
+@*             <!-- Switch per opzioni UI -->
+            <MudStack Row="true" Spacing="3" Class="mb-4">
+                <MudSwitch @bind-Value="hoverEnabled" Color="Color.Primary">Hover</MudSwitch>
+                <MudSwitch @bind-Value="denseEnabled" Color="Color.Primary">Dense</MudSwitch>
+                <MudSwitch @bind-Value="stripedEnabled" Color="Color.Primary">Striped</MudSwitch>
+                <MudSwitch @bind-Value="borderedEnabled" Color="Color.Primary">Bordered</MudSwitch>
+            </MudStack> *@
+
+            <!-- DataGrid -->
+            @if (isLoading)
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
+                <MudText Align="Align.Center" Class="my-4">Caricamento in corso...</MudText>
+            }
+            else if (persone == null || !persone.Any())
+            {
+                <MudAlert Severity="Severity.Info" Class="my-4">
+                    Nessuna persona trovata.
+                </MudAlert>
+            }
+            else
+            {
+                <MudDataGrid T="PersonaGridItemResponse"
+                             Items="@persone"
+                             QuickFilter="@QuickFilter"
+                             Hover="@hoverEnabled"
+                             Dense="@denseEnabled"
+                             Striped="@stripedEnabled"
+                             Bordered="@borderedEnabled"
+                             MultiSelection="true"
+                             @bind-SelectedItems="selectedItems"
+                             RowStyleFunc="@RowStyleFunc"
+                             RowClick="@RowClicked"
+                             Filterable="true"
+                             Sortable="true"
+                             Hideable="true"
+                             ColumnResizeMode="ResizeMode.Column">
+
+                    <Columns>
+                        <SelectColumn T="PersonaGridItemResponse" />
+                        <TemplateColumn Title="Azioni" Sortable="false" Filterable="false">
+                            <CellTemplate>
+                                <MudMenu Icon="@Icons.Material.Filled.MoreVert" 
+                                         Size="Size.Small"
+                                         Dense="true"
+                                         AnchorOrigin="Origin.BottomRight"
+                                         TransformOrigin="Origin.TopRight">
+                                    <MudMenuItem Icon="@Icons.Material.Filled.Visibility"
+                                                 IconColor="Color.Primary"
+                                                 OnClick="@(() => NavigateToDetails(context.Item.EntitaAziendaleId))">
+                                        Visualizza
+                                    </MudMenuItem>
+                                    <MudMenuItem Icon="@Icons.Material.Filled.Edit"
+                                                 IconColor="Color.Secondary"
+                                                 OnClick="@(() => NavigateToEdit(context.Item.EntitaAziendaleId))">
+                                        Modifica
+                                    </MudMenuItem>
+                                    <MudDivider />
+                                    <MudMenuItem Icon="@Icons.Material.Filled.Delete"
+                                                 IconColor="Color.Error"
+                                                 OnClick="@(() => ConfirmDelete(context.Item))">
+                                        Elimina
+                                    </MudMenuItem>
+                                </MudMenu>
+                            </CellTemplate>
+                        </TemplateColumn>
+                        <PropertyColumn Property="x => x.EntitaAziendaleId" Title="ID" />
+                        <PropertyColumn Property="x => x.Nome" Title="Nome" />
+                        <PropertyColumn Property="x => x.Cognome" Title="Cognome" />
+                        <PropertyColumn Property="x => x.NomeCompleto" Title="Nome Completo" />
+                        <PropertyColumn Property="x => x.CodiceFiscale" Title="Codice Fiscale" />
+                        <PropertyColumn Property="x => x.Genere" Title="Genere">
+                            <CellTemplate>
+                                @if (context.Item.Genere == "M")
+                                {
+                                    <MudChip Size="Size.Small" Color="Color.Info">Maschio</MudChip>
+                                }
+                                else if (context.Item.Genere == "F")
+                                {
+                                    <MudChip Size="Size.Small" Color="Color.Secondary">Femmina</MudChip>
+                                }
+                                else
+                                {
+                                    <MudText>@context.Item.Genere</MudText>
+                                }
+                            </CellTemplate>
+                        </PropertyColumn>
+
+                        @* <PropertyColumn Property="x => x.DataNascita" Title="Data Nascita" Format="dd/MM/yyyy" /> *@
+                        @* <PropertyColumn Property="x => x.LuogoNascita" Title="Luogo Nascita" /> *@
+                        <PropertyColumn Property="x => x.Qualifica" Title="Qualifica">
+                            <CellTemplate>
+                                @if (!string.IsNullOrEmpty(context.Item.Qualifica))
+                                {
+                                    <MudChip Size="Size.Small" Color="Color.Success">@context.Item.Qualifica</MudChip>
+                                }
+                                else
+                                {
+                                    <MudText>-</MudText>
+                                }
+                            </CellTemplate>
+                        </PropertyColumn>
+                        <PropertyColumn Property="x => x.Titolo" Title="Titolo" />
+                        <PropertyColumn Property="x => x.PrivacyConsent" Title="Consenso Privacy">
+                            <CellTemplate>
+                                @if (context.Item.PrivacyConsent)
+                                {
+                                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" />
+                                }
+                                else
+                                {
+                                    <MudIcon Icon="@Icons.Material.Filled.Cancel" Color="Color.Error" Size="Size.Small" />
+                                }
+                            </CellTemplate>
+                        </PropertyColumn>
+            @*             <PropertyColumn Property="x => x.DataConsensoPrivacy" Title="Data Consenso" Format="dd/MM/yyyy" /> *@
+                        <PropertyColumn Property="x => x.Stato" Title="Stato">
+                            <CellTemplate>
+                                @if (context.Item.Stato == "Attivo")
+                                {
+                                    <MudChip Size="Size.Small" Color="Color.Success">Attivo</MudChip>
+                                }
+                                else if (context.Item.Stato == "Eliminato")
+                                {
+                                    <MudChip Size="Size.Small" Color="Color.Error">Eliminato</MudChip>
+                                }
+                                else
+                                {
+                                    <MudChip Size="Size.Small" Color="Color.Warning">@context.Item.Stato</MudChip>
+                                }
+                            </CellTemplate>
+                        </PropertyColumn>
+                    </Columns>
+
+                    <PagerContent>
+                        <MudDataGridPager T="PersonaGridItemResponse" />
+                    </PagerContent>
+                </MudDataGrid>
+            }
+
+            <!-- Pannello selezione multipla -->
+            @if (selectedItems != null && selectedItems.Count > 0)
+            {
+                <MudPaper Elevation="2" Class="mt-4 pa-4">
+                    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                        <MudText Typo="Typo.h6">
+                            <MudIcon Icon="@Icons.Material.Filled.CheckBox" Class="mr-2" />
+                            @selectedItems.Count persone selezionate
+                        </MudText>
+                        <MudStack Row="true" Spacing="2">
+                            <MudButton Variant="Variant.Filled"
+                                     Color="Color.Warning"
+                                     StartIcon="@Icons.Material.Filled.Edit"
+                                     OnClick="BulkEdit">
+                                Modifica in blocco
+                            </MudButton>
+                            <MudButton Variant="Variant.Filled"
+                                     Color="Color.Error"
+                                     StartIcon="@Icons.Material.Filled.Delete"
+                                     OnClick="BulkDelete">
+                                Elimina selezionate
+                            </MudButton>
+                            <MudButton Variant="Variant.Outlined"
+                                     OnClick="ClearSelection">
+                                Deseleziona
+                            </MudButton>
+                        </MudStack>
+                    </MudStack>
+                </MudPaper>
+            }
+
+            <!-- Event Log Panel -->
+@*             <MudExpansionPanels Class="mt-4">
+                <MudExpansionPanel Text="Event Log" MaxHeight="300">
+                    <MudPaper Elevation="0" Class="pa-2" Style="max-height: 250px; overflow-y: auto;">
+                        @if (eventLog.Count == 0)
+                        {
+                            <MudText Color="Color.Secondary">Nessun evento registrato</MudText>
+                        }
+                        else
+                        {
+                            @foreach (var evt in eventLog.OrderByDescending(e => e))
+                            {
+                                <MudText Typo="Typo.body2" Class="mb-1">@evt</MudText>
+                            }
+                        }
+                    </MudPaper>
+                </MudExpansionPanel>
+            </MudExpansionPanels> *@
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+@code {
+    private List<PersonaGridItemResponse> persone = new();
+    private HashSet<PersonaGridItemResponse> selectedItems = new();
+    private List<string> eventLog = new();
+
+    private bool isLoading = true;
+    private string globalSearch = string.Empty;
+
+    // UI Options
+    private bool hoverEnabled = true;
+    private bool denseEnabled = true;
+    private bool stripedEnabled = true;
+    private bool borderedEnabled = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPersoneAsync();
+    }
+
+    private async Task LoadPersoneAsync()
+    {
+        try
+        {
+            isLoading = true;
+            LogEvent("Caricamento persone in corso...");
+
+            var result = await PersoneService.GetAllPersoneAsync();
+
+            if (result != null)
+            {
+                persone = result;
+                LogEvent($"Caricate {persone.Count} persone con successo");
+            }
+            else
+            {
+                persone = new List<PersonaGridItemResponse>();
+                Snackbar.Add("Errore nel caricamento delle persone", Severity.Error);
+                LogEvent("Errore: caricamento persone fallito");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Errore nel caricamento delle persone");
+            Snackbar.Add($"Errore: {ex.Message}", Severity.Error);
+            persone = new List<PersonaGridItemResponse>();
+            LogEvent($"Errore: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    /// <summary>
+    /// QuickFilter: filtra per Nome, Cognome, Codice Fiscale
+    /// </summary>
+    private bool QuickFilter(PersonaGridItemResponse persona)
+    {
+        if (string.IsNullOrWhiteSpace(globalSearch))
+            return true;
+
+        var filter = globalSearch.Trim().ToLower();
+
+        return (persona.Nome?.ToLower().Contains(filter) ?? false)
+            || (persona.Cognome?.ToLower().Contains(filter) ?? false)
+            || (persona.CodiceFiscale?.ToLower().Contains(filter) ?? false)
+            || (persona.Qualifica?.ToLower().Contains(filter) ?? false);
+    }
+
+    /// <summary>
+    /// Stile dinamico delle righe in base allo Stato
+    /// </summary>
+    private string RowStyleFunc(PersonaGridItemResponse persona, int rowNumber)
+    {
+        var stato = persona.Stato?.ToLowerInvariant();
+
+        return stato switch
+        {
+            "attivo" => "background-color: rgba(76, 175, 80, 0.05);",      // Verde chiaro
+            "sospeso" => "background-color: rgba(255, 235, 59, 0.05);",    // Giallo chiaro
+            "eliminato" => "background-color: rgba(244, 67, 54, 0.05);",   // Rosso chiaro
+            _ => string.Empty
+        };
+    }
+
+    /// <summary>
+    /// Gestione click su riga
+    /// </summary>
+    private void RowClicked(DataGridRowClickEventArgs<PersonaGridItemResponse> args)
+    {
+        var persona = args.Item;
+        LogEvent($"Click su riga: {persona.NomeCompleto} (ID: {persona.EntitaAziendaleId})");
+    }
+
+    private void NavigateToCreate()
+    {
+        LogEvent("Navigazione a: Crea Persona");
+        Navigation.NavigateTo("/persone/create");
+    }
+
+    private void NavigateToDetails(int id)
+    {
+        LogEvent($"Navigazione a: Dettagli Persona ID {id}");
+        Navigation.NavigateTo($"/persone/{id}");
+    }
+
+    private void NavigateToEdit(int id)
+    {
+        LogEvent($"Navigazione a: Modifica Persona ID {id}");
+        Navigation.NavigateTo($"/persone/{id}/edit");
+    }
+
+    private async Task ConfirmDelete(PersonaGridItemResponse persona)
+    {
+        var parameters = new DialogParameters
+        {
+            ["ContentText"] = $"Sei sicuro di voler eliminare la persona '{persona.NomeCompleto}'? Questa azione non può essere annullata.",
+            ["ButtonText"] = "Elimina",
+            ["Color"] = Color.Error
+        };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small };
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Conferma Eliminazione", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await DeletePersonaAsync(persona.EntitaAziendaleId);
+        }
+    }
+
+    private async Task DeletePersonaAsync(int id)
+    {
+        try
+        {
+            LogEvent($"Eliminazione persona ID {id}...");
+
+            var success = await PersoneService.DeletePersonaAsync(id);
+
+            if (success)
+            {
+                Snackbar.Add("Persona eliminata con successo", Severity.Success);
+                LogEvent($"Persona ID {id} eliminata con successo");
+                await LoadPersoneAsync();
+            }
+            else
+            {
+                Snackbar.Add("Errore durante l'eliminazione della persona", Severity.Error);
+                LogEvent($"Errore eliminazione persona ID {id}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Errore nell'eliminazione della persona ID: {Id}", id);
+            Snackbar.Add($"Errore: {ex.Message}", Severity.Error);
+            LogEvent($"Errore eliminazione: {ex.Message}");
+        }
+    }
+
+    private void BulkEdit()
+    {
+        LogEvent($"Modifica in blocco: {selectedItems.Count} persone");
+        Snackbar.Add($"Funzionalità modifica in blocco non ancora implementata ({selectedItems.Count} persone)", Severity.Info);
+    }
+
+    private async Task BulkDelete()
+    {
+        if (selectedItems == null || selectedItems.Count == 0)
+            return;
+
+        var parameters = new DialogParameters
+        {
+            ["ContentText"] = $"Sei sicuro di voler eliminare {selectedItems.Count} persone? Questa azione non può essere annullata.",
+            ["ButtonText"] = "Elimina tutte",
+            ["Color"] = Color.Error
+        };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small };
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Conferma Eliminazione Multipla", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            LogEvent($"Eliminazione in blocco di {selectedItems.Count} persone...");
+
+            int successCount = 0;
+            foreach (var persona in selectedItems.ToList())
+            {
+                var success = await PersoneService.DeletePersonaAsync(persona.EntitaAziendaleId);
+                if (success) successCount++;
+            }
+
+            Snackbar.Add($"{successCount} di {selectedItems.Count} persone eliminate", Severity.Success);
+            LogEvent($"Eliminate {successCount}/{selectedItems.Count} persone");
+
+            ClearSelection();
+            await LoadPersoneAsync();
+        }
+    }
+
+    private void ClearSelection()
+    {
+        selectedItems.Clear();
+        LogEvent("Selezione cancellata");
+    }
+
+    private void LogEvent(string message)
+    {
+        var timestamp = DateTime.Now.ToString("HH:mm:ss");
+        eventLog.Add($"[{timestamp}] {message}");
+
+        // Mantieni solo gli ultimi 50 eventi
+        if (eventLog.Count > 50)
+            eventLog.RemoveAt(0);
+    }
+}

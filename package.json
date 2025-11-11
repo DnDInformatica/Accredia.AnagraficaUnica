@@ -1,0 +1,30 @@
+{
+  "name": "accredia-gestione-anagrafica-tests",
+  "version": "1.0.0",
+  "description": "Playwright tests for Accredia Gestione Anagrafica - Corporate Skill verification",
+  "keywords": [
+    "accredia",
+    "playwright",
+    "testing",
+    "e2e",
+    "corporate-skill"
+  ],
+  "author": "Accredia",
+  "license": "MIT",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report",
+    "test:corporate": "playwright test accredia-corporate-skill.spec.ts",
+    "test:corporate:ui": "playwright test accredia-corporate-skill.spec.ts --ui",
+    "test:corporate:headed": "playwright test accredia-corporate-skill.spec.ts --headed",
+    "install:browsers": "playwright install"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

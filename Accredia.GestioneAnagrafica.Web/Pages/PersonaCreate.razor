@@ -1,0 +1,123 @@
+@page "/persone/create"
+@using Accredia.GestioneAnagrafica.Web.Services
+@using Accredia.GestioneAnagrafica.Web.Components
+@using Accredia.GestioneAnagrafica.Shared.DTOs
+@inject IPersoneService PersoneService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@inject ILogger<PersonaCreate> Logger
+
+<PageTitle>Nuova Persona - Accredia Gestione Anagrafica</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudBreadcrumbs Items="_breadcrumbItems" Separator=">"></MudBreadcrumbs>
+
+    <MudPaper Class="pa-4 mt-4">
+        <MudText Typo="Typo.h4" Class="mb-4">
+            <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Class="mr-2" />
+            Crea Nuova Persona
+        </MudText>
+
+        <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+
+            <PersonaForm Model="@model" IsReadOnly="false" />
+
+            <MudDivider Class="my-4" />
+
+            <!-- Pulsanti Azione -->
+            <MudGrid>
+                <MudItem xs="12" Class="d-flex justify-space-between">
+                    <MudButton Variant="Variant.Outlined"
+                               Color="Color.Default"
+                               StartIcon="@Icons.Material.Filled.ArrowBack"
+                               OnClick="@(() => Navigation.NavigateTo("/persone"))"
+                               Disabled="@isSaving">
+                        Annulla
+                    </MudButton>
+
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.Save"
+                               ButtonType="ButtonType.Submit"
+                               Disabled="@isSaving">
+                        @if (isSaving)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                            <span>Salvataggio...</span>
+                        }
+                        else
+                        {
+                            <span>Salva Persona</span>
+                        }
+                    </MudButton>
+                </MudItem>
+            </MudGrid>
+
+            <!-- Errori di Validazione -->
+            <MudItem xs="12" Class="mt-4">
+                <ValidationSummary />
+            </MudItem>
+        </EditForm>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private CreatePersonaRequest model = new();
+    private bool isSaving = false;
+
+    private List<BreadcrumbItem> _breadcrumbItems = new()
+    {
+        new BreadcrumbItem("Home", href: "/"),
+        new BreadcrumbItem("Persone", href: "/persone"),
+        new BreadcrumbItem("Nuova Persona", href: null, disabled: true)
+    };
+
+    protected override void OnInitialized()
+    {
+        // Inizializza valori di default
+        model = new CreatePersonaRequest
+        {
+            Genere = "M",
+            PrivacyConsent = false
+        };
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            isSaving = true;
+            StateHasChanged();
+
+            Logger.LogInformation("Creazione persona: {Nome} {Cognome}", model.Nome, model.Cognome);
+
+            var result = await PersoneService.CreatePersonaAsync(model);
+
+            if (result != null)
+            {
+                Snackbar.Add($"Persona '{result.Nome} {result.Cognome}' creata con successo!", Severity.Success);
+
+                // Attendi un attimo per mostrare il messaggio
+                await Task.Delay(500);
+
+                // Naviga alla lista
+                Navigation.NavigateTo("/persone");
+            }
+            else
+            {
+                Snackbar.Add("Errore durante la creazione della persona. Riprova.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Errore nella creazione della persona");
+            Snackbar.Add($"Errore: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isSaving = false;
+            StateHasChanged();
+        }
+    }
+}

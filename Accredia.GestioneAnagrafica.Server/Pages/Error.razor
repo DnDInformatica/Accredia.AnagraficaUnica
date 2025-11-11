@@ -1,0 +1,28 @@
+@page "/Error"
+@using System.Diagnostics
+
+<PageTitle>Errore</PageTitle>
+
+<div class="alert alert-danger">
+    <h1 class="text-danger">Errore!</h1>
+    <p>Si è verificato un errore durante l'elaborazione della richiesta.</p>
+
+    @if (ShowDetails)
+    {
+        <details class="collapse">
+            <summary class="btn-link" style="cursor:pointer">Mostra dettagli errore (Development only)</summary>
+            <pre>@ExceptionMessage</pre>
+        </details>
+    }
+</div>
+
+@code{
+    private string? ExceptionMessage;
+    private bool ShowDetails;
+
+    protected override void OnInitialized()
+    {
+        ExceptionMessage = "Si è verificato un errore non gestito.";
+        ShowDetails = false; // Impostare a true solo in development
+    }
+}

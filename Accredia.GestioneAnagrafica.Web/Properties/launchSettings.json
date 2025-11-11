@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:44303",
+      "sslPort": 44303
+    }
+  },
+  "profiles": {
+    "Accredia.GestioneAnagrafica.Web": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:7412",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "API_URL": "http://localhost:5000"
+      },
+      "applicationUrl": "https://localhost:7412;http://localhost:7413"
+    },
+    "Accredia.GestioneAnagrafica.Web (Hosted)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "API_URL": "http://localhost:5000"
+      },
+      "applicationUrl": "https://localhost:7412;http://localhost:7413"
+    }
+  }
+}{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:44303",
+      "sslPort": 44303
+    }
+  },
+  "profiles": {
+    "Accredia.GestioneAnagrafica.Web": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:7412",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "API_URL": "http://localhost:5000"
+      },
+      "applicationUrl": "https://localhost:7412;http://localhost:7413"
+    },
+    "Accredia.GestioneAnagrafica.Web (Hosted)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "API_URL": "http://localhost:5000"
+      },
+      "applicationUrl": "https://localhost:7412;http://localhost:7413"
+    }
+  }
+}

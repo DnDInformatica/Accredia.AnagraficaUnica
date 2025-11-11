@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Accredia.GestioneAnagrafica.Server</AssemblyName>
+    <RootNamespace>Accredia.GestioneAnagrafica.Server</RootNamespace>
+
+    <!-- Necessari per Blazor WebAssembly Hosted -->
+    <ScopedCssEnabled>true</ScopedCssEnabled>
+    <StaticWebAssetsEnabled>true</StaticWebAssetsEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Server-side Blazor hosting -->
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.0" />
+
+    <!-- UI Framework -->
+    <PackageReference Include="MudBlazor" Version="8.14.0" />
+
+    <!-- JWT gestione token -->
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Progetti condivisi -->
+    <ProjectReference Include="..\Accredia.GestioneAnagrafica.Shared\Accredia.GestioneAnagrafica.Shared.csproj" />
+
+    <!-- Client Blazor WebAssembly -->
+    <ProjectReference Include="..\Accredia.GestioneAnagrafica.Web\Accredia.GestioneAnagrafica.Web.csproj" ReferenceOutputAssembly="false" SkipGetTargetFrameworkProperties="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\Pages\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,159 @@
+@using Accredia.GestioneAnagrafica.Shared.DTOs
+@typeparam TItem
+
+<MudDataGrid T="TItem"
+             Items="@Items"
+             QuickFilter="@QuickFilter"
+             Hover="@Hover"
+             Dense="@Dense"
+             Striped="@Striped"
+             Bordered="@Bordered"
+             MultiSelection="@MultiSelection"
+             SelectedItems="@SelectedItems"
+             SelectedItemsChanged="@OnSelectedItemsChanged"
+             RowStyleFunc="@RowStyleFunc"
+             RowClick="@OnRowClick"
+             Filterable="@Filterable"
+             Sortable="@Sortable"
+             Hideable="@Hideable"
+             ColumnResizeMode="@ColumnResizeMode">
+
+    <Columns>
+        <!-- Checkbox selezione -->
+        @if (MultiSelection)
+        {
+            <SelectColumn T="TItem" />
+        }
+
+        <!-- Colonna Azioni (spostata davanti) -->
+        <TemplateColumn Title="Azioni" Sortable="false" Filterable="false">
+            <CellTemplate>
+                @if (OnViewClick.HasDelegate || OnEditClick.HasDelegate || OnDeleteClick.HasDelegate)
+                {
+                    @if (OnViewClick.HasDelegate)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Visibility"
+                                     Color="Color.Primary"
+                                     Size="Size.Small"
+                                     Title="Visualizza"
+                                     OnClick="@(() => OnViewClick.InvokeAsync(context.Item))" />
+                    }
+                    @if (OnEditClick.HasDelegate)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                     Color="Color.Secondary"
+                                     Size="Size.Small"
+                                     Title="Modifica"
+                                     OnClick="@(() => OnEditClick.InvokeAsync(context.Item))" />
+                    }
+                    @if (OnDeleteClick.HasDelegate)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                     Color="Color.Error"
+                                     Size="Size.Small"
+                                     Title="Elimina"
+                                     OnClick="@(() => OnDeleteClick.InvokeAsync(context.Item))" />
+                    }
+                }
+            </CellTemplate>
+        </TemplateColumn>
+
+        <!-- Colonne dati -->
+        @ColumnsContent
+
+    </Columns>
+
+    <PagerContent>
+        <MudDataGridPager T="TItem" />
+    </PagerContent>
+</MudDataGrid>
+
+@code {
+    /// <summary>
+    /// Items da visualizzare nella griglia
+    /// </summary>
+    [Parameter]
+    public IEnumerable<TItem> Items { get; set; } = Enumerable.Empty<TItem>();
+
+    /// <summary>
+    /// Funzione di filtro rapido
+    /// </summary>
+    [Parameter]
+    public Func<TItem, bool>? QuickFilter { get; set; }
+
+    /// <summary>
+    /// Funzione per lo stile dinamico delle righe
+    /// </summary>
+    [Parameter]
+    public Func<TItem, int, string>? RowStyleFunc { get; set; }
+
+    /// <summary>
+    /// Event callback per il click su riga
+    /// </summary>
+    [Parameter]
+    public EventCallback<DataGridRowClickEventArgs<TItem>> OnRowClick { get; set; }
+
+    /// <summary>
+    /// Event callback per cambio selezione
+    /// </summary>
+    [Parameter]
+    public EventCallback<HashSet<TItem>> OnSelectedItemsChanged { get; set; }
+
+    /// <summary>
+    /// Event callback per visualizza
+    /// </summary>
+    [Parameter]
+    public EventCallback<TItem> OnViewClick { get; set; }
+
+    /// <summary>
+    /// Event callback per modifica
+    /// </summary>
+    [Parameter]
+    public EventCallback<TItem> OnEditClick { get; set; }
+
+    /// <summary>
+    /// Event callback per elimina
+    /// </summary>
+    [Parameter]
+    public EventCallback<TItem> OnDeleteClick { get; set; }
+
+    /// <summary>
+    /// Items selezionati
+    /// </summary>
+    [Parameter]
+    public HashSet<TItem> SelectedItems { get; set; } = new();
+
+    /// <summary>
+    /// Contenuto delle colonne (slot per colonne personalizzate)
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ColumnsContent { get; set; }
+
+    // Opzioni UI
+    [Parameter]
+    public bool Hover { get; set; } = true;
+
+    [Parameter]
+    public bool Dense { get; set; } = true;
+
+    [Parameter]
+    public bool Striped { get; set; } = true;
+
+    [Parameter]
+    public bool Bordered { get; set; } = false;
+
+    [Parameter]
+    public bool MultiSelection { get; set; } = true;
+
+    [Parameter]
+    public bool Filterable { get; set; } = true;
+
+    [Parameter]
+    public bool Sortable { get; set; } = true;
+
+    [Parameter]
+    public bool Hideable { get; set; } = true;
+
+    [Parameter]
+    public ResizeMode ColumnResizeMode { get; set; } = ResizeMode.Column;
+}

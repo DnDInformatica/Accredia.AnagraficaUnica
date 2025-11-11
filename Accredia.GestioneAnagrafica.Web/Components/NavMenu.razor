@@ -1,0 +1,35 @@
+@implements IAsyncDisposable
+
+<MudNavMenu>
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    
+    <MudNavGroup Title="Anagrafica" Icon="@Icons.Material.Filled.People" Expanded="false">
+        <MudNavLink Href="persone" Icon="@Icons.Material.Filled.Person">Persone</MudNavLink>
+        <MudNavLink Href="enti" Icon="@Icons.Material.Filled.Business">Enti</MudNavLink>
+        <MudNavLink Href="organismi" Icon="@Icons.Material.Filled.BusinessCenter">Organismi</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup Title="Documenti" Icon="@Icons.Material.Filled.Description" Expanded="false">
+        <MudNavLink Href="documenti" Icon="@Icons.Material.Filled.CloudUpload">Upload</MudNavLink>
+        <MudNavLink Href="documenti-lista" Icon="@Icons.Material.Filled.FolderOpen">Lista</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup Title="Contatti" Icon="@Icons.Material.Filled.ContactMail" Expanded="false">
+        <MudNavLink Href="email" Icon="@Icons.Material.Filled.Email">Email</MudNavLink>
+        <MudNavLink Href="telefoni" Icon="@Icons.Material.Filled.Phone">Telefoni</MudNavLink>
+        <MudNavLink Href="indirizzi" Icon="@Icons.Material.Filled.Home">Indirizzi</MudNavLink>
+    </MudNavGroup>
+
+    <MudDivider Class="my-2" />
+
+    <MudNavLink Href="settings" Icon="@Icons.Material.Filled.Settings">Impostazioni</MudNavLink>
+    <MudNavLink Href="logout" Icon="@Icons.Material.Filled.Logout">Logout</MudNavLink>
+</MudNavMenu>
+
+@code {
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        // Cleanup resources
+        await ValueTask.CompletedTask;
+    }
+}

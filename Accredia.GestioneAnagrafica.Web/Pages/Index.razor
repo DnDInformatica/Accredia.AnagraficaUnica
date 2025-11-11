@@ -1,0 +1,46 @@
+@page "/"
+@using Accredia.GestioneAnagrafica.Shared.State
+@inject UserState UserState
+@inject NavigationManager NavigationManager
+
+<PageTitle>Home - Accredia</PageTitle>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Benvenuto in Accredia - Gestione Anagrafica</h2>
+                </div>
+                <div class="card-body">
+                    @if (UserState?.IsAuthenticated ?? false)
+                    {
+                        <p>Ciao, <strong>@UserState?.Username</strong>!</p>
+                        <p>Seleziona una delle opzioni dal menu a sinistra per iniziare.</p>
+                        <div class="btn-group mt-3" role="group">
+                            <a href="/organismi" class="btn btn-primary">Gestisci Organismi</a>
+                            <a href="/dashboard" class="btn btn-info">Visualizza Dashboard</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>Per accedere al sistema, effettua il login.</p>
+                        <button class="btn btn-primary" @onclick="OnLogin">Accedi</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    private void OnLogin()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+}

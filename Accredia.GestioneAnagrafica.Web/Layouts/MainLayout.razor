@@ -1,0 +1,107 @@
+@using Accredia.GestioneAnagrafica.Web.Themes
+@using Accredia.GestioneAnagrafica.Web.Services
+@using Accredia.GestioneAnagrafica.Web.Components
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="@GetAccrediaTheme(isDarkMode)" @bind-IsDarkMode="isDarkMode" />
+<MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.Small" />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle" />
+        <img src="/img/logo-accredia-white.png" alt="Accredia" style="height: 40px; margin-left: 1rem; margin-right: 1rem;" />
+        <MudText Typo="Typo.h6">Gestione Anagrafica</MudText>
+        <MudSpacer />
+        <AuthorizeView>
+            <Authorized>
+                <MudMenu Icon="@Icons.Material.Filled.AccountCircle"
+                         Color="Color.Inherit"
+                         AnchorOrigin="Origin.BottomRight"
+                         TransformOrigin="Origin.TopRight">
+                    <MudMenuItem Icon="@Icons.Material.Filled.Person">
+                        @context.User.Identity?.Name ?? "Utente"
+                    </MudMenuItem>
+                    <MudDivider />
+                    <MudMenuItem Icon="@Icons.Material.Filled.Settings" Href="/settings">
+                        Impostazioni
+                    </MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="@HandleLogout">
+                        Logout
+                    </MudMenuItem>
+                </MudMenu>
+            </Authorized>
+            <NotAuthorized>
+                <MudButton Variant="Variant.Text"
+                           Color="Color.Inherit"
+                           Href="/login"
+                           StartIcon="@Icons.Material.Filled.Login">
+                    Login
+                </MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-4">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool _drawerOpen = true;
+    private bool isDarkMode = false;
+
+    private MudTheme GetAccrediaTheme(bool darkMode) =>
+        darkMode ? AccrediaTheme.GetDarkTheme() : AccrediaTheme.GetLightTheme();
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private async Task HandleLogout()
+    {
+        // TODO: Implementare logica di logout
+        // - Chiamare servizio auth
+        // - Pulire token
+        // - Redirect a pagina login
+        await Task.CompletedTask;
+    }
+}
+
+<style>
+    /* Stili personalizzati per il layout */
+    .drawer-header { 
+        display: flex; 
+        align-items: center; 
+        gap: 0.5rem; 
+    }
+
+    /* Override MudBlazor per conformità corporate */
+    .mud-appbar {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .mud-drawer {
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 960px) {
+        .mud-main-content .mud-container {
+            padding: 1rem !important;
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .mud-main-content .mud-container {
+            padding: 0.5rem !important;
+        }
+    }
+</style>

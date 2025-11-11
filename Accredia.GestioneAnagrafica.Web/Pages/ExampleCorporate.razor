@@ -1,0 +1,303 @@
+@page "/example-corporate"
+@using Accredia.GestioneAnagrafica.Web.Themes
+@using MudBlazor
+
+<PageTitle>Accredia Corporate Components - Esempio</PageTitle>
+
+<!-- Accredia Corporate Header -->
+<div class="accredia-header">
+    <h1>Componenti Corporate Accredia</h1>
+    <p>Esempi di utilizzo della skill corporate nel progetto</p>
+</div>
+
+<!-- Content Container -->
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-6">
+    
+    <!-- Sezione Pulsanti -->
+    <MudCard Class="mb-6">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">Pulsanti Corporate</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudStack Row="true" Spacing="2">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">
+                    Primario
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary">
+                    Secondario
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary">
+                    Outline
+                </MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Primary">
+                    Text
+                </MudButton>
+            </MudStack>
+            
+            <MudStack Row="true" Spacing="2" Class="mt-4">
+                <button class="btn-accredia-primary">CSS Primary</button>
+                <button class="btn-accredia-secondary">CSS Secondary</button>
+                <button class="btn-accredia-outline">CSS Outline</button>
+            </MudStack>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione Card -->
+    <MudCard Class="mb-6">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">Card Corporate</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <div class="accredia-card">
+                        <div class="accredia-card-header">
+                            <h3>Card CSS</h3>
+                        </div>
+                        <div class="accredia-card-body">
+                            <p>Questo è un esempio di card realizzata con classi CSS corporate.</p>
+                            <p>Utilizza shadow, border e spacing dal tema Accredia.</p>
+                        </div>
+                    </div>
+                </MudItem>
+                
+                <MudItem xs="12" sm="6">
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.body2" Color="Color.Primary">Card MudBlazor</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudText Typo="Typo.body2">
+                                Questo è un esempio di card MudBlazor con tema Accredia integrato.
+                            </MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione Badge -->
+    <MudCard Class="mb-6">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">Badge Corporate</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudStack Row="true" Spacing="2">
+                <span class="badge-accredia">Default</span>
+                <span class="badge-accredia badge-secondary">Secondary</span>
+                <span class="badge-accredia badge-success">Success</span>
+                <span class="badge-accredia badge-warning">Warning</span>
+                <span class="badge-accredia badge-error">Error</span>
+            </MudStack>
+            
+            <MudStack Row="true" Spacing="2" Class="mt-4">
+                <MudChip Color="Color.Primary" Variant="Variant.Filled">Primary</MudChip>
+                <MudChip Color="Color.Secondary" Variant="Variant.Filled">Secondary</MudChip>
+                <MudChip Color="Color.Success" Variant="Variant.Filled">Success</MudChip>
+                <MudChip Color="Color.Warning" Variant="Variant.Filled">Warning</MudChip>
+                <MudChip Color="Color.Error" Variant="Variant.Filled">Error</MudChip>
+            </MudStack>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione Alert -->
+    <MudCard Class="mb-6">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">Alert Corporate</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <div class="alert-info">
+                ℹ️ <strong>Info:</strong> Questo è un messaggio informativo
+            </div>
+            <div class="alert-success">
+                ✓ <strong>Successo:</strong> Operazione completata correttamente
+            </div>
+            <div class="alert-warning">
+                ⚠️ <strong>Avviso:</strong> Prestare attenzione a questa azione
+            </div>
+            <div class="alert-error">
+                ✗ <strong>Errore:</strong> Si è verificato un errore
+            </div>
+            
+            <MudStack Class="mt-4" Spacing="2">
+                <MudAlert Severity="Severity.Info">MudBlazor Info Alert</MudAlert>
+                <MudAlert Severity="Severity.Success">MudBlazor Success Alert</MudAlert>
+                <MudAlert Severity="Severity.Warning">MudBlazor Warning Alert</MudAlert>
+                <MudAlert Severity="Severity.Error">MudBlazor Error Alert</MudAlert>
+            </MudStack>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione Tipografia -->
+    <MudCard Class="mb-6">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">Tipografia Corporate</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText Typo="Typo.h1">Heading 1 - 2rem</MudText>
+            <MudText Typo="Typo.h2">Heading 2 - 1.75rem</MudText>
+            <MudText Typo="Typo.h3">Heading 3 - 1.5rem</MudText>
+            <MudText Typo="Typo.h4">Heading 4 - 1.25rem</MudText>
+            <MudText Typo="Typo.h5">Heading 5 - 1.1rem</MudText>
+            <MudText Typo="Typo.h6">Heading 6 - 1rem</MudText>
+            
+            <MudDivider Class="my-4" />
+            
+            <MudText Typo="Typo.body1">Body 1 - Testo principale del corpo</MudText>
+            <MudText Typo="Typo.body2">Body 2 - Testo secondario del corpo</MudText>
+            <MudText Typo="Typo.subtitle1">Subtitle 1 - Sottotitolo principale</MudText>
+            <MudText Typo="Typo.subtitle2">Subtitle 2 - Sottotitolo secondario</MudText>
+            <MudText Typo="Typo.caption">Caption - Testo didascalia</MudText>
+            <MudText Typo="Typo.overline">Overline - Testo di sovratitolo</MudText>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione Form -->
+    <MudCard Class="mb-6">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">Form Corporate</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <EditForm Model="@formData" OnValidSubmit="@HandleSubmit">
+                <DataAnnotationsValidator />
+                
+                <MudTextField @bind-Value="formData.Nome" 
+                              Label="Nome" 
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Normal"
+                              FullWidth="true"
+                              Class="mb-4" />
+                
+                <MudTextField @bind-Value="formData.Email" 
+                              Label="Email" 
+                              Type="email"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Normal"
+                              FullWidth="true"
+                              Class="mb-4" />
+                
+                <MudSelect @bind-Value="formData.Categoria" 
+                           Label="Categoria"
+                           Variant="Variant.Outlined"
+                           Margin="Margin.Normal"
+                           FullWidth="true"
+                           Class="mb-4">
+                    <MudSelectItem Value="@("Opzione 1")">Opzione 1</MudSelectItem>
+                    <MudSelectItem Value="@("Opzione 2")">Opzione 2</MudSelectItem>
+                    <MudSelectItem Value="@("Opzione 3")">Opzione 3</MudSelectItem>
+                </MudSelect>
+                
+                <MudCheckBox @bind-Value="formData.Accetto" 
+                             Label="Accetto i termini di servizio"
+                             Class="mb-4" />
+                
+                <MudStack Row="true" Spacing="2">
+                    <MudButton ButtonType="ButtonType.Submit" 
+                               Variant="Variant.Filled"
+                               Color="Color.Primary">
+                        Invia
+                    </MudButton>
+                    <MudButton ButtonType="ButtonType.Reset"
+                               Variant="Variant.Outlined"
+                               Color="Color.Primary">
+                        Annulla
+                    </MudButton>
+                </MudStack>
+            </EditForm>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Sezione CSS Variables -->
+    <MudCard Class="mb-6">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">CSS Variables Disponibili</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudSimpleTable Striped="true" Dense="true">
+                <thead>
+                    <tr>
+                        <th>Variabile</th>
+                        <th>Valore</th>
+                        <th>Utilizzo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>--accredia-primary</code></td>
+                        <td>#003366</td>
+                        <td>Colore primario</td>
+                    </tr>
+                    <tr>
+                        <td><code>--accredia-secondary</code></td>
+                        <td>#0066CC</td>
+                        <td>Colore secondario</td>
+                    </tr>
+                    <tr>
+                        <td><code>--spacing-md</code></td>
+                        <td>1rem</td>
+                        <td>Spacing medio</td>
+                    </tr>
+                    <tr>
+                        <td><code>--border-radius-md</code></td>
+                        <td>4px</td>
+                        <td>Border radius medio</td>
+                    </tr>
+                    <tr>
+                        <td><code>--shadow-md</code></td>
+                        <td>0 4px 8px rgba(0,0,0,0.15)</td>
+                        <td>Shadow medio</td>
+                    </tr>
+                </tbody>
+            </MudSimpleTable>
+        </MudCardContent>
+    </MudCard>
+
+    <!-- Footer Spacing -->
+    <MudSpacer Class="mb-6" />
+
+</MudContainer>
+
+@code {
+    private FormModel formData = new();
+
+    private async Task HandleSubmit()
+    {
+        await Task.Delay(500);
+        // Implementare logica di submit
+    }
+
+    public class FormModel
+    {
+        public string Nome { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Categoria { get; set; } = "";
+        public bool Accetto { get; set; }
+    }
+}
+
+<style>
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .my-4 { margin-top: 1rem; margin-bottom: 1rem; }
+</style>

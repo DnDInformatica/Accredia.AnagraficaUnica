@@ -1,0 +1,233 @@
+@page "/login"
+@using Accredia.GestioneAnagrafica.Web.Services
+@using Accredia.GestioneAnagrafica.Shared.Auth
+@using Microsoft.AspNetCore.Components.Authorization
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+@inject ILogger<Login> Logger
+@inject AuthenticationStateProvider AuthStateProvider
+
+<PageTitle>Login - Accredia Gestione Anagrafica</PageTitle>
+
+<div class="login-container">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="mb-0">
+                            <span class="oi oi-lock-locked me-2"></span>
+                            Login - Accredia
+                        </h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <form @onsubmit="HandleLogin">
+                            <!-- Username Field -->
+                            <div class="mb-3">
+                                <label for="username" class="form-label fw-bold">
+                                    <span class="oi oi-person me-2"></span>
+                                    Username
+                                </label>
+                                <input type="text" 
+                                       id="username"
+                                       class="form-control form-control-lg" 
+                                       @bind="_username" 
+                                       placeholder="Inserisci il tuo username"
+                                       disabled="@_isLoading"
+                                       required 
+                                       autofocus />
+                            </div>
+                            
+                            <!-- Password Field -->
+                            <div class="mb-4">
+                                <label for="password" class="form-label fw-bold">
+                                    <span class="oi oi-key me-2"></span>
+                                    Password
+                                </label>
+                                <input type="password" 
+                                       id="password"
+                                       class="form-control form-control-lg" 
+                                       @bind="_password" 
+                                       placeholder="Inserisci la tua password"
+                                       disabled="@_isLoading"
+                                       required />
+                            </div>
+                            
+                            <!-- Error Message -->
+                            @if (!string.IsNullOrEmpty(_errorMessage))
+                            {
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <span class="oi oi-x me-2"></span>
+                                    <strong>Errore di login:</strong> @_errorMessage
+                                    <button type="button" class="btn-close" @onclick="() => _errorMessage = string.Empty"></button>
+                                </div>
+                            }
+                            
+                            <!-- Success Message -->
+                            @if (!string.IsNullOrEmpty(_successMessage))
+                            {
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <span class="oi oi-check me-2"></span>
+                                    @_successMessage
+                                    <button type="button" class="btn-close" @onclick="() => _successMessage = string.Empty"></button>
+                                </div>
+                            }
+                            
+                            <!-- Submit Button -->
+                            <button type="submit" 
+                                    class="btn btn-primary btn-lg w-100" 
+                                    disabled="@_isLoading">
+                                @if (_isLoading)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                    <span>Accesso in corso...</span>
+                                }
+                                else
+                                {
+                                    <span class="oi oi-account-login me-2"></span>
+                                    <span>Accedi</span>
+                                }
+                            </button>
+                        </form>
+
+                        <!-- Test Credentials Info -->
+                        <div class="mt-4 p-3 bg-light border border-warning rounded">
+                            <small class="text-muted">
+                                <strong class="text-warning">ℹ️  Credenziali di test:</strong><br>
+                                Username: <code>admin</code><br>
+                                Password: <code>password</code>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Section -->
+                <div class="mt-4 text-center text-muted">
+                    <small>
+                        <p>Accedi al sistema Accredia per gestire gli organismi accreditati.</p>
+                        <p class="mb-0">© 2025 Accredia - Tutti i diritti riservati</p>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .login-container {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .card {
+        border: none;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-header {
+        border-radius: 0.75rem 0.75rem 0 0;
+        padding: 1.5rem;
+        border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control:focus,
+    .form-control-lg:focus {
+        border-color: #0052cc;
+        box-shadow: 0 0 0 0.2rem rgba(0, 82, 204, 0.25);
+    }
+
+    .btn-primary:disabled {
+        opacity: 0.7;
+    }
+
+    .alert {
+        border-radius: 0.5rem;
+        border: none;
+    }
+
+    code {
+        background-color: #f0f0f0;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+        color: #d73a49;
+    }
+</style>
+
+@code {
+    private string _username = string.Empty;
+    private string _password = string.Empty;
+    private string _errorMessage = string.Empty;
+    private string _successMessage = string.Empty;
+    private bool _isLoading = false;
+
+    /// <summary>
+    /// Gestisce il submit del form di login
+    /// </summary>
+    private async Task HandleLogin()
+    {
+        if (string.IsNullOrWhiteSpace(_username) || string.IsNullOrWhiteSpace(_password))
+        {
+            _errorMessage = "Username e password sono obbligatori";
+            return;
+        }
+
+        _isLoading = true;
+        _errorMessage = string.Empty;
+        _successMessage = string.Empty;
+
+        try
+        {
+            Logger.LogInformation($"Tentativo di login per: {_username}");
+
+            var result = await AuthService.LoginAsync(_username, _password);
+            
+            if (result)
+            {
+                _successMessage = "Login riuscito! Reindirizzamento in corso...";
+                Logger.LogInformation($"Login riuscito per: {_username}");
+                
+                // Recupera il token da AuthService
+                var token = Accredia.GestioneAnagrafica.Web.Services.AuthService.SessionToken;
+                
+                if (!string.IsNullOrEmpty(token))
+                {
+                    // Aggiorna lo stato di autenticazione (che salva anche il token in localStorage)
+                    var jwtProvider = (Accredia.GestioneAnagrafica.Shared.Auth.JwtAuthenticationStateProvider)AuthStateProvider;
+                    await jwtProvider.MarkUserAsAuthenticated(token);
+
+                    Logger.LogInformation("Stato di autenticazione aggiornato");
+                }
+                
+                // Attendi un momento per mostrare il messaggio
+                await Task.Delay(1000);
+                
+                // Navigazione al dashboard
+                Navigation.NavigateTo("/dashboard", forceLoad: false);
+            }
+            else
+            {
+                _errorMessage = "Username o password non corretti";
+                Logger.LogWarning($"Login fallito per: {_username}");
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Errore durante il login: {ex.Message}";
+            Logger.LogError(ex, "Errore durante il login");
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Pagina Login inizializzata");
+        await base.OnInitializedAsync();
+    }
+}

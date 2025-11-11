@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Meta Tags Branding Accredia -->
+    <meta name="description" content="Accredia - Gestione Anagrafica - Sistema di gestione dati aziendali" />
+    <meta name="theme-color" content="#003366" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Accredia" />
+    
+    <title>Accredia Gestione Anagrafica</title>
+    <base href="/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    
+    <!-- Google Fonts - Corporate Font Family Accredia -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Montserrat per Headers (Bold) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet" />
+    <!-- Open Sans per Body Text -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- Roboto come fallback -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    
+    <!-- Preload corporate fonts Accredia -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" as="style">
+    
+    <style>
+        /* Accredia Corporate Branding Inline Styles */
+        html, body {
+            font-family: 'Open Sans', 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #FAFAFA;
+            color: #212121;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        #app {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Loading Spinner -->
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #FAFAFA;">
+            <div style="text-align: center;">
+                <div class="spinner-border" style="color: #1a1a2e; width: 3rem; height: 3rem; border-width: 4px; margin-bottom: 1rem;"></div>
+                <p style="color: #757575; font-family: 'Open Sans', 'Segoe UI', sans-serif; font-size: 1rem;">
+                    Caricamento Accredia Gestione Anagrafica...
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <!-- Blazor WebAssembly Bootstrap -->
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    
+    <!-- Accredia Corporate Initialization Script -->
+    <script>
+        // Inizializzazione tema corporate Accredia
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Accredia Corporate Theme initialized');
+            
+            // Verifica preferenze sistema per dark mode
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                console.log('Dark mode detected');
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        });
+        
+        // Listener per cambiamento tema sistema
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (e.matches) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        });
+    </script>
+</body>
+</html>

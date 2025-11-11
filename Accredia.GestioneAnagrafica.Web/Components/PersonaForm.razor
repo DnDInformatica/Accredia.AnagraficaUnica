@@ -1,0 +1,183 @@
+@using Accredia.GestioneAnagrafica.Shared.DTOs
+@using System.ComponentModel.DataAnnotations
+
+<MudGrid>
+    <!-- Sezione Dati Anagrafici -->
+    <MudItem xs="12">
+        <MudText Typo="Typo.h6" Class="mb-2">Dati Anagrafici</MudText>
+        <MudDivider />
+    </MudItem>
+
+    <MudItem xs="12" sm="6">
+        <MudTextField @bind-Value="Model.Nome"
+                      Label="Nome"
+                      Variant="Variant.Outlined"
+                      Required="true"
+                      Disabled="@IsReadOnly"
+                      MaxLength="100"
+                      Counter="100"
+                      Immediate="true" />
+    </MudItem>
+
+    <MudItem xs="12" sm="6">
+        <MudTextField @bind-Value="Model.Cognome"
+                      Label="Cognome"
+                      Variant="Variant.Outlined"
+                      Required="true"
+                      Disabled="@IsReadOnly"
+                      MaxLength="100"
+                      Counter="100"
+                      Immediate="true" />
+    </MudItem>
+
+    <MudItem xs="12" sm="6">
+        <MudTextField @bind-Value="Model.CodiceFiscale"
+                      Label="Codice Fiscale"
+                      Variant="Variant.Outlined"
+                      Required="true"
+                      Disabled="@IsReadOnly"
+                      MaxLength="20"
+                      HelperText="Es: RSSMRA80A01H501Z (o N/D, ESTERO per soggetti esteri)"
+                      Immediate="true" />
+    </MudItem>
+
+    <MudItem xs="12" sm="6">
+        <MudSelect @bind-Value="Model.Genere"
+                   Label="Genere"
+                   Variant="Variant.Outlined"
+                   Required="true"
+                   Disabled="@IsReadOnly">
+            <MudSelectItem Value="@("M")">Maschio</MudSelectItem>
+            <MudSelectItem Value="@("F")">Femmina</MudSelectItem>
+            <MudSelectItem Value="@("O")">Altro</MudSelectItem>
+        </MudSelect>
+    </MudItem>
+
+    <MudItem xs="12" sm="6">
+        <MudDatePicker @bind-Date="DataNascita"
+                       Label="Data di Nascita"
+                       Variant="Variant.Outlined"
+                       Disabled="@IsReadOnly"
+                       Editable="true"
+                       DateFormat="dd/MM/yyyy"
+                       MaxDate="DateTime.Today" />
+    </MudItem>
+
+    <MudItem xs="12" sm="6">
+        <MudTextField @bind-Value="Model.LuogoNascita"
+                      Label="Luogo di Nascita"
+                      Variant="Variant.Outlined"
+                      Disabled="@IsReadOnly"
+                      MaxLength="100" />
+    </MudItem>
+
+    <!-- Sezione Dati Professionali -->
+    <MudItem xs="12" Class="mt-4">
+        <MudText Typo="Typo.h6" Class="mb-2">Dati Professionali</MudText>
+        <MudDivider />
+    </MudItem>
+
+    <MudItem xs="12" sm="6">
+        <MudNumericField @bind-Value="Model.EntitaAziendaleId"
+                         Label="ID Entità Aziendale"
+                         Variant="Variant.Outlined"
+                         Required="true"
+                         Disabled="@IsReadOnly"
+                         Min="1"
+                         HelperText="Inserire l'ID dell'entità aziendale di appartenenza" />
+    </MudItem>
+
+    <MudItem xs="12" sm="6">
+        <MudTextField @bind-Value="Model.Qualifica"
+                      Label="Qualifica"
+                      Variant="Variant.Outlined"
+                      Disabled="@IsReadOnly"
+                      MaxLength="100"
+                      HelperText="Es: Responsabile Qualità, Ispettore" />
+    </MudItem>
+
+    <MudItem xs="12" sm="6">
+        <MudTextField @bind-Value="Model.Titolo"
+                      Label="Titolo"
+                      Variant="Variant.Outlined"
+                      Disabled="@IsReadOnly"
+                      MaxLength="50"
+                      HelperText="Es: Dott., Ing., Prof." />
+    </MudItem>
+
+    <MudItem xs="12" sm="6">
+        <MudNumericField @bind-Value="Model.TitoloOnorificoId"
+                         Label="ID Titolo Onorifico"
+                         Variant="Variant.Outlined"
+                         Disabled="@IsReadOnly"
+                         Min="0"
+                         HelperText="Opzionale" />
+    </MudItem>
+
+    <!-- Sezione Privacy -->
+    <MudItem xs="12" Class="mt-4">
+        <MudText Typo="Typo.h6" Class="mb-2">Consenso Privacy</MudText>
+        <MudDivider />
+    </MudItem>
+
+    <MudItem xs="12" sm="6">
+        <MudSwitch @bind-Value="Model.PrivacyConsent"
+                   Label="Consenso Privacy"
+                   Color="Color.Primary"
+                   Disabled="@IsReadOnly" />
+    </MudItem>
+
+    <MudItem xs="12" sm="6">
+        <MudDatePicker @bind-Date="DataConsensoPrivacy"
+                       Label="Data Consenso Privacy"
+                       Variant="Variant.Outlined"
+                       Disabled="@IsReadOnly"
+                       Editable="true"
+                       DateFormat="dd/MM/yyyy" />
+    </MudItem>
+
+    <!-- Sezione Note -->
+    <MudItem xs="12" Class="mt-4">
+        <MudText Typo="Typo.h6" Class="mb-2">Note</MudText>
+        <MudDivider />
+    </MudItem>
+
+    <MudItem xs="12">
+        <MudTextField @bind-Value="Model.Note"
+                      Label="Note"
+                      Variant="Variant.Outlined"
+                      Lines="4"
+                      Disabled="@IsReadOnly"
+                      MaxLength="500"
+                      Counter="500" />
+    </MudItem>
+</MudGrid>
+
+@code {
+    [Parameter]
+    public CreatePersonaRequest Model { get; set; } = new();
+
+    [Parameter]
+    public bool IsReadOnly { get; set; } = false;
+
+    private DateTime? DataNascita
+    {
+        get => Model.DataNascita;
+        set => Model.DataNascita = value;
+    }
+
+    private DateTime? DataConsensoPrivacy
+    {
+        get => Model.DataConsensoPrivacy;
+        set => Model.DataConsensoPrivacy = value;
+    }
+
+    protected override void OnInitialized()
+    {
+        // Inizializza genere se vuoto
+        if (string.IsNullOrEmpty(Model.Genere))
+        {
+            Model.Genere = "M";
+        }
+    }
+}
