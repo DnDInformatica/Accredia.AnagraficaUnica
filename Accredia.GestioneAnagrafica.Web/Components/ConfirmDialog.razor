@@ -12,7 +12,7 @@
 
 @code {
     [CascadingParameter]
-    MudDialogInstance? MudDialog { get; set; }
+    public MudDialogInstance MudDialog { get; set; } = default!;
 
     [Parameter]
     public string ContentText { get; set; } = "Sei sicuro?";

@@ -17,7 +17,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.*" />
 
     <!-- UI Framework -->
-    <PackageReference Include="MudBlazor" Version="8.14.0" />
+    <PackageReference Include="MudBlazor" Version="6.20.0" />
 
     <!-- JWT gestione token -->
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
