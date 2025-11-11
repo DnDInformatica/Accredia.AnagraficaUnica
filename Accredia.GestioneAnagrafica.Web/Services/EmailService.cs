@@ -1,4 +1,4 @@
-﻿using Accredia.GestioneAnagrafica.API.DTOs;
+﻿using Accredia.GestioneAnagrafica.Shared.Responses;
 using Accredia.GestioneAnagrafica.Shared.DTOs;
 using Accredia.GestioneAnagrafica.Shared.Models;
 using System.Net.Http.Json;
@@ -27,7 +27,7 @@ public class EmailService : IEmailService
             _logger.LogInformation("Recupero email per EntitaAziendaleId: {EntitaId}, Page: {Page}, PageSize: {PageSize}",
                 entitaAziendaleId, page, pageSize);
 
-            var response = await _httpClient.GetFromJsonAsync<PageResult<EmailDTO.ListItem>>(
+            var response = await _httpClient.GetAsync<PageResult<EmailDTO.ListItem>>(
                 $"api/email/entita/{entitaAziendaleId}?page={page}&pageSize={pageSize}");
 
             if (response != null)
@@ -63,7 +63,7 @@ public class EmailService : IEmailService
         {
             _logger.LogInformation("Recupero dettaglio email con ID: {EmailId}", id);
 
-            var response = await _httpClient.GetFromJsonAsync<EmailDTO.Response>($"api/email/{id}");
+            var response = await _httpClient.GetAsync<EmailDTO.Response>($"api/email/{id}");
 
             if (response != null)
             {
@@ -98,27 +98,22 @@ public class EmailService : IEmailService
         {
             _logger.LogInformation("Creazione nuova email per EntitaAziendaleId: {EntitaId}", request.EntitaAziendaleId);
 
-            var response = await _httpClient.PostAsJsonAsync("api/email", request);
+            var response = await _httpClient.PostAsync<EmailDTO.Response>("api/email", request);
 
-            if (response.IsSuccessStatusCode)
+            if (response != null)
             {
-                var createdEmail = await response.Content.ReadFromJsonAsync<EmailDTO.Response>();
                 return new ApiResponse<EmailDTO.Response>
                 {
                     Success = true,
-                    Data = createdEmail,
+                    Data = response,
                     Message = "Email creata con successo"
                 };
             }
 
-            var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogWarning("Errore nella creazione dell'email. Status: {StatusCode}, Content: {Content}",
-                response.StatusCode, errorContent);
-
             return new ApiResponse<EmailDTO.Response>
             {
                 Success = false,
-                Message = $"Errore nella creazione dell'email: {errorContent}"
+                Message = "Nessun dato ricevuto dall'API"
             };
         }
         catch (Exception ex)
@@ -139,27 +134,22 @@ public class EmailService : IEmailService
         {
             _logger.LogInformation("Aggiornamento email con ID: {EmailId}", id);
 
-            var response = await _httpClient.PutAsJsonAsync($"api/email/{id}", request);
+            var response = await _httpClient.PutAsync<EmailDTO.Response>($"api/email/{id}", request);
 
-            if (response.IsSuccessStatusCode)
+            if (response != null)
             {
-                var updatedEmail = await response.Content.ReadFromJsonAsync<EmailDTO.Response>();
                 return new ApiResponse<EmailDTO.Response>
                 {
                     Success = true,
-                    Data = updatedEmail,
+                    Data = response,
                     Message = "Email aggiornata con successo"
                 };
             }
 
-            var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogWarning("Errore nell'aggiornamento dell'email. Status: {StatusCode}, Content: {Content}",
-                response.StatusCode, errorContent);
-
             return new ApiResponse<EmailDTO.Response>
             {
                 Success = false,
-                Message = $"Errore nell'aggiornamento dell'email: {errorContent}"
+                Message = "Nessun dato ricevuto dall'API"
             };
         }
         catch (Exception ex)
@@ -180,27 +170,13 @@ public class EmailService : IEmailService
         {
             _logger.LogInformation("Eliminazione email con ID: {EmailId}", id);
 
-            var response = await _httpClient.DeleteAsync($"api/email/{id}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                return new ApiResponse<bool>
-                {
-                    Success = true,
-                    Data = true,
-                    Message = "Email eliminata con successo"
-                };
-            }
-
-            var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogWarning("Errore nell'eliminazione dell'email. Status: {StatusCode}, Content: {Content}",
-                response.StatusCode, errorContent);
+            await _httpClient.DeleteAsync($"api/email/{id}");
 
             return new ApiResponse<bool>
             {
-                Success = false,
-                Data = false,
-                Message = $"Errore nell'eliminazione dell'email: {errorContent}"
+                Success = true,
+                Data = true,
+                Message = "Email eliminata con successo"
             };
         }
         catch (Exception ex)
@@ -228,7 +204,7 @@ public class EmailService : IEmailService
                 queryString += $"&excludeId={excludeId.Value}";
             }
 
-            var response = await _httpClient.GetFromJsonAsync<bool>(queryString);
+            var response = await _httpClient.GetAsync<bool>(queryString);
 
             return new ApiResponse<bool>
             {

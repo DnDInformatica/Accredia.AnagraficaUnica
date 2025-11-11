@@ -1,5 +1,5 @@
 using AutoMapper;
-using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.Shared.DTOs;
 using Accredia.GestioneAnagrafica.Shared.DTOs;
 using Accredia.GestioneAnagrafica.Shared.Models;
 

@@ -1,5 +1,5 @@
 using FluentValidation;
-using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.Shared.DTOs;
 using Accredia.GestioneAnagrafica.API.Services;
 using Microsoft.Extensions.Options;
 using Accredia.GestioneAnagrafica.API.Config;

@@ -1,5 +1,6 @@
 ﻿using Accredia.GestioneAnagrafica.Shared.DTOs;
 using Accredia.GestioneAnagrafica.Shared.Models;
+using Accredia.GestioneAnagrafica.Shared.Responses;
 using System.Net.Http.Json;
 
 namespace Accredia.GestioneAnagrafica.Web.Services;
@@ -26,7 +27,7 @@ public class IndirizziService : IIndirizziService
             _logger.LogInformation("Recupero indirizzi per EntitaAziendaleId: {EntitaId}, Page: {Page}, PageSize: {PageSize}",
                 entitaAziendaleId, page, pageSize);
 
-            var response = await _httpClient.GetFromJsonAsync<PageResult<IndirizzoDTO.List>>(
+            var response = await _httpClient.GetAsync<PageResult<IndirizzoDTO.List>>(
                 $"api/indirizzi/entita/{entitaAziendaleId}?page={page}&pageSize={pageSize}");
 
             if (response != null)
@@ -62,7 +63,7 @@ public class IndirizziService : IIndirizziService
         {
             _logger.LogInformation("Recupero dettaglio indirizzo con ID: {IndirizzoId}", id);
 
-            var response = await _httpClient.GetFromJsonAsync<IndirizzoDTO.Response>($"api/indirizzi/{id}");
+            var response = await _httpClient.GetAsync<IndirizzoDTO.Response>($"api/indirizzi/{id}");
 
             if (response != null)
             {
@@ -97,27 +98,22 @@ public class IndirizziService : IIndirizziService
         {
             _logger.LogInformation("Creazione nuovo indirizzo per EntitaAziendaleId: {EntitaId}", request.ComuneId);
 
-            var response = await _httpClient.PostAsJsonAsync("api/indirizzi", request);
+            var response = await _httpClient.PostAsync<IndirizzoDTO.Response>("api/indirizzi", request);
 
-            if (response.IsSuccessStatusCode)
+            if (response != null)
             {
-                var createdIndirizzo = await response.Content.ReadFromJsonAsync<IndirizzoDTO.Response>();
                 return new ApiResponse<IndirizzoDTO.Response>
                 {
                     Success = true,
-                    Data = createdIndirizzo,
+                    Data = response,
                     Message = "Indirizzo creato con successo"
                 };
             }
 
-            var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogWarning("Errore nella creazione dell'indirizzo. Status: {StatusCode}, Content: {Content}",
-                response.StatusCode, errorContent);
-
             return new ApiResponse<IndirizzoDTO.Response>
             {
                 Success = false,
-                Message = $"Errore nella creazione dell'indirizzo: {errorContent}"
+                Message = "Nessun dato ricevuto dall'API"
             };
         }
         catch (Exception ex)
@@ -138,27 +134,22 @@ public class IndirizziService : IIndirizziService
         {
             _logger.LogInformation("Aggiornamento indirizzo con ID: {IndirizzoId}", id);
 
-            var response = await _httpClient.PutAsJsonAsync($"api/indirizzi/{id}", request);
+            var response = await _httpClient.PutAsync<IndirizzoDTO.Response>($"api/indirizzi/{id}", request);
 
-            if (response.IsSuccessStatusCode)
+            if (response != null)
             {
-                var updatedIndirizzo = await response.Content.ReadFromJsonAsync<IndirizzoDTO.Response>();
                 return new ApiResponse<IndirizzoDTO.Response>
                 {
                     Success = true,
-                    Data = updatedIndirizzo,
+                    Data = response,
                     Message = "Indirizzo aggiornato con successo"
                 };
             }
 
-            var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogWarning("Errore nell'aggiornamento dell'indirizzo. Status: {StatusCode}, Content: {Content}",
-                response.StatusCode, errorContent);
-
             return new ApiResponse<IndirizzoDTO.Response>
             {
                 Success = false,
-                Message = $"Errore nell'aggiornamento dell'indirizzo: {errorContent}"
+                Message = "Nessun dato ricevuto dall'API"
             };
         }
         catch (Exception ex)
@@ -179,27 +170,13 @@ public class IndirizziService : IIndirizziService
         {
             _logger.LogInformation("Eliminazione indirizzo con ID: {IndirizzoId}", id);
 
-            var response = await _httpClient.DeleteAsync($"api/indirizzi/{id}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                return new ApiResponse<bool>
-                {
-                    Success = true,
-                    Data = true,
-                    Message = "Indirizzo eliminato con successo"
-                };
-            }
-
-            var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogWarning("Errore nell'eliminazione dell'indirizzo. Status: {StatusCode}, Content: {Content}",
-                response.StatusCode, errorContent);
+            await _httpClient.DeleteAsync($"api/indirizzi/{id}");
 
             return new ApiResponse<bool>
             {
-                Success = false,
-                Data = false,
-                Message = $"Errore nell'eliminazione dell'indirizzo: {errorContent}"
+                Success = true,
+                Data = true,
+                Message = "Indirizzo eliminato con successo"
             };
         }
         catch (Exception ex)
@@ -231,7 +208,7 @@ public class IndirizziService : IIndirizziService
                 };
             }
 
-            var response = await _httpClient.GetFromJsonAsync<List<IndirizzoDTO.List>>(
+            var response = await _httpClient.GetAsync<List<IndirizzoDTO.List>>(
                 $"api/indirizzi/search?q={Uri.EscapeDataString(query)}");
 
             return new ApiResponse<List<IndirizzoDTO.List>>

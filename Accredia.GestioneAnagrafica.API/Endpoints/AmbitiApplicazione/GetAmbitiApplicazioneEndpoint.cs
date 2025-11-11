@@ -2,8 +2,8 @@ using Carter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Accredia.GestioneAnagrafica.API.Data;
-using Accredia.GestioneAnagrafica.API.DTOs;
-using Accredia.GestioneAnagrafica.API.Responses;
+using Accredia.GestioneAnagrafica.Shared.DTOs;
+using Accredia.GestioneAnagrafica.Shared.Responses;
 
 namespace Accredia.GestioneAnagrafica.API.Endpoints.AmbitiApplicazione;
 

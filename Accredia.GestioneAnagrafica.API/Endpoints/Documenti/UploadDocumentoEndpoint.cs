@@ -3,10 +3,10 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Accredia.GestioneAnagrafica.API.Data;
-using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.Shared.DTOs;
 using Accredia.GestioneAnagrafica.Shared.DTOs;
 using Accredia.GestioneAnagrafica.Shared.Models;
-using Accredia.GestioneAnagrafica.API.Responses;
+using Accredia.GestioneAnagrafica.Shared.Responses;
 using Accredia.GestioneAnagrafica.API.Services;
 
 namespace Accredia.GestioneAnagrafica.API.Endpoints.Documenti;

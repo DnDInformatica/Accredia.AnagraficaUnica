@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Accredia.GestioneAnagrafica.API.DTOs
+namespace Accredia.GestioneAnagrafica.Shared.DTOs
 {
     /// <summary>
     /// DTOs per le Entità Tipologiche (lookup tables READ-ONLY)

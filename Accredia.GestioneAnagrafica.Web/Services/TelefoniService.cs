@@ -1,4 +1,4 @@
-﻿using Accredia.GestioneAnagrafica.API.DTOs;
+﻿using Accredia.GestioneAnagrafica.Shared.Responses;
 using Accredia.GestioneAnagrafica.Shared.DTOs;
 using Accredia.GestioneAnagrafica.Shared.Models;
 using System.Net.Http.Json;
@@ -27,7 +27,7 @@ public class TelefoniService : ITelefoniService
             _logger.LogInformation("Recupero telefoni per EntitaAziendaleId: {EntitaId}, Page: {Page}, PageSize: {PageSize}",
                 entitaAziendaleId, page, pageSize);
 
-            var response = await _httpClient.GetFromJsonAsync<PageResult<TelefonoDTO.ListItem>>(
+            var response = await _httpClient.GetAsync<PageResult<TelefonoDTO.ListItem>>(
                 $"api/telefoni/entita/{entitaAziendaleId}?page={page}&pageSize={pageSize}");
 
             if (response != null)
@@ -63,7 +63,7 @@ public class TelefoniService : ITelefoniService
         {
             _logger.LogInformation("Recupero dettaglio telefono con ID: {TelefonoId}", id);
 
-            var response = await _httpClient.GetFromJsonAsync<TelefonoDTO.Response>($"api/telefoni/{id}");
+            var response = await _httpClient.GetAsync<TelefonoDTO.Response>($"api/telefoni/{id}");
 
             if (response != null)
             {
@@ -98,27 +98,22 @@ public class TelefoniService : ITelefoniService
         {
             _logger.LogInformation("Creazione nuovo telefono per EntitaAziendaleId: {EntitaId}", request.EntitaAziendaleId);
 
-            var response = await _httpClient.PostAsJsonAsync("api/telefoni", request);
+            var response = await _httpClient.PostAsync<TelefonoDTO.Response>("api/telefoni", request);
 
-            if (response.IsSuccessStatusCode)
+            if (response != null)
             {
-                var createdTelefono = await response.Content.ReadFromJsonAsync<TelefonoDTO.Response>();
                 return new ApiResponse<TelefonoDTO.Response>
                 {
                     Success = true,
-                    Data = createdTelefono,
+                    Data = response,
                     Message = "Telefono creato con successo"
                 };
             }
 
-            var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogWarning("Errore nella creazione del telefono. Status: {StatusCode}, Content: {Content}",
-                response.StatusCode, errorContent);
-
             return new ApiResponse<TelefonoDTO.Response>
             {
                 Success = false,
-                Message = $"Errore nella creazione del telefono: {errorContent}"
+                Message = "Nessun dato ricevuto dall'API"
             };
         }
         catch (Exception ex)
@@ -139,27 +134,22 @@ public class TelefoniService : ITelefoniService
         {
             _logger.LogInformation("Aggiornamento telefono con ID: {TelefonoId}", id);
 
-            var response = await _httpClient.PutAsJsonAsync($"api/telefoni/{id}", request);
+            var response = await _httpClient.PutAsync<TelefonoDTO.Response>($"api/telefoni/{id}", request);
 
-            if (response.IsSuccessStatusCode)
+            if (response != null)
             {
-                var updatedTelefono = await response.Content.ReadFromJsonAsync<TelefonoDTO.Response>();
                 return new ApiResponse<TelefonoDTO.Response>
                 {
                     Success = true,
-                    Data = updatedTelefono,
+                    Data = response,
                     Message = "Telefono aggiornato con successo"
                 };
             }
 
-            var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogWarning("Errore nell'aggiornamento del telefono. Status: {StatusCode}, Content: {Content}",
-                response.StatusCode, errorContent);
-
             return new ApiResponse<TelefonoDTO.Response>
             {
                 Success = false,
-                Message = $"Errore nell'aggiornamento del telefono: {errorContent}"
+                Message = "Nessun dato ricevuto dall'API"
             };
         }
         catch (Exception ex)
@@ -180,27 +170,13 @@ public class TelefoniService : ITelefoniService
         {
             _logger.LogInformation("Eliminazione telefono con ID: {TelefonoId}", id);
 
-            var response = await _httpClient.DeleteAsync($"api/telefoni/{id}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                return new ApiResponse<bool>
-                {
-                    Success = true,
-                    Data = true,
-                    Message = "Telefono eliminato con successo"
-                };
-            }
-
-            var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogWarning("Errore nell'eliminazione del telefono. Status: {StatusCode}, Content: {Content}",
-                response.StatusCode, errorContent);
+            await _httpClient.DeleteAsync($"api/telefoni/{id}");
 
             return new ApiResponse<bool>
             {
-                Success = false,
-                Data = false,
-                Message = $"Errore nell'eliminazione del telefono: {errorContent}"
+                Success = true,
+                Data = true,
+                Message = "Telefono eliminato con successo"
             };
         }
         catch (Exception ex)

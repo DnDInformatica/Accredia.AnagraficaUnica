@@ -1,5 +1,5 @@
 using FluentValidation;
-using Accredia.GestioneAnagrafica.API.DTOs;
+using Accredia.GestioneAnagrafica.Shared.DTOs;
 using System.Text.RegularExpressions;
 
 namespace Accredia.GestioneAnagrafica.API.Validators
