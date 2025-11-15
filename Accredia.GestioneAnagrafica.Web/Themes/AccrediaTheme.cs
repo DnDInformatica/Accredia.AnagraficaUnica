@@ -8,6 +8,20 @@ namespace Accredia.GestioneAnagrafica.Web.Themes;
 /// </summary>
 public class AccrediaTheme : MudTheme
 {
+    // Colori Corporate Identity Accredia - Accessibili come proprietà statiche
+    public static readonly string Grafite = "#1a1a2e";
+    public static readonly string Ocra = "#d4a574";
+    public static readonly string Ecru = "#f8f7f5";
+    public static readonly string Écru = "#f8f7f5";  // Alias con accento
+    public static readonly string Bianco = "#ffffff";
+    public static readonly string Nero = "#000000";
+
+    // Colori Semantici - Accessibili come proprietà statiche
+    public static readonly string SuccessGreen = "#2e7d32";
+    public static readonly string InfoBlue = "#0277bd";
+    public static readonly string WarningOrange = "#f57c00";
+    public static readonly string ErrorRed = "#c62828";
+
     public AccrediaTheme()
     {
         // Colori Accredia Corporate Identity
