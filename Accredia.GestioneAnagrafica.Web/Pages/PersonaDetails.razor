@@ -125,7 +125,7 @@
 
                 <MudItem xs="12" sm="6">
                     <MudText Typo="Typo.subtitle2" Color="Color.Default">Consenso</MudText>
-                    <MudChip Size="Size.Small" Color="@(persona.PrivacyConsent ? Color.Success : Color.Default)">
+                    <MudChip T="string" Size="Size.Small" Color="@(persona.PrivacyConsent ? Color.Success : Color.Default)">
                         @(persona.PrivacyConsent ? "Accordato" : "Non accordato")
                     </MudChip>
                 </MudItem>
