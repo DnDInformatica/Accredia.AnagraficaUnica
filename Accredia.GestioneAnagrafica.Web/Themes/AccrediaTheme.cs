@@ -124,10 +124,10 @@ public class AccrediaTheme : MudTheme
         };
 
         // Typography - Font ufficiali Accredia
-        // IMPORTANTE: In MudBlazor 8.14.x FontWeight e LineHeight sono stringhe!
+        // IMPORTANTE: In MudBlazor 8.14.x le classi Typography sono concrete (non BaseTypography)
         Typography = new Typography
         {
-            Default = new BaseTypography
+            Default = new DefaultTypography
             {
                 FontFamily = new[] { "Open Sans", "Roboto", "Helvetica", "Arial", "sans-serif" },
                 FontSize = "1rem",           // 16px
@@ -135,7 +135,7 @@ public class AccrediaTheme : MudTheme
                 LineHeight = "1.5",          // STRINGA non double!
                 LetterSpacing = "0.00938em"
             },
-            H1 = new BaseTypography
+            H1 = new H1Typography
             {
                 FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
                 FontSize = "2.5rem",         // 40px
@@ -143,7 +143,7 @@ public class AccrediaTheme : MudTheme
                 LineHeight = "1.2",          // STRINGA non double!
                 LetterSpacing = "-0.01562em"
             },
-            H2 = new BaseTypography
+            H2 = new H2Typography
             {
                 FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
                 FontSize = "2rem",           // 32px
@@ -151,7 +151,7 @@ public class AccrediaTheme : MudTheme
                 LineHeight = "1.3",          // STRINGA non double!
                 LetterSpacing = "-0.00833em"
             },
-            H3 = new BaseTypography
+            H3 = new H3Typography
             {
                 FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
                 FontSize = "1.75rem",        // 28px
@@ -159,7 +159,7 @@ public class AccrediaTheme : MudTheme
                 LineHeight = "1.4",          // STRINGA non double!
                 LetterSpacing = "0em"
             },
-            H4 = new BaseTypography
+            H4 = new H4Typography
             {
                 FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
                 FontSize = "1.5rem",         // 24px
@@ -167,7 +167,7 @@ public class AccrediaTheme : MudTheme
                 LineHeight = "1.4",          // STRINGA non double!
                 LetterSpacing = "0.00735em"
             },
-            H5 = new BaseTypography
+            H5 = new H5Typography
             {
                 FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
                 FontSize = "1.25rem",        // 20px
@@ -175,7 +175,7 @@ public class AccrediaTheme : MudTheme
                 LineHeight = "1.5",          // STRINGA non double!
                 LetterSpacing = "0em"
             },
-            H6 = new BaseTypography
+            H6 = new H6Typography
             {
                 FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
                 FontSize = "1rem",           // 16px
@@ -183,7 +183,7 @@ public class AccrediaTheme : MudTheme
                 LineHeight = "1.6",          // STRINGA non double!
                 LetterSpacing = "0.0075em"
             },
-            Body1 = new BaseTypography
+            Body1 = new Body1Typography
             {
                 FontFamily = new[] { "Open Sans", "Roboto", "Helvetica", "Arial", "sans-serif" },
                 FontSize = "1rem",           // 16px
@@ -191,7 +191,7 @@ public class AccrediaTheme : MudTheme
                 LineHeight = "1.5",          // STRINGA non double!
                 LetterSpacing = "0.00938em"
             },
-            Body2 = new BaseTypography
+            Body2 = new Body2Typography
             {
                 FontFamily = new[] { "Open Sans", "Roboto", "Helvetica", "Arial", "sans-serif" },
                 FontSize = "0.875rem",       // 14px
@@ -199,7 +199,7 @@ public class AccrediaTheme : MudTheme
                 LineHeight = "1.43",         // STRINGA non double!
                 LetterSpacing = "0.01071em"
             },
-            Button = new BaseTypography
+            Button = new ButtonTypography
             {
                 FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
                 FontSize = "0.875rem",       // 14px
@@ -208,7 +208,7 @@ public class AccrediaTheme : MudTheme
                 LetterSpacing = "0.02857em",
                 TextTransform = "uppercase"
             },
-            Caption = new BaseTypography
+            Caption = new CaptionTypography
             {
                 FontFamily = new[] { "Open Sans", "Roboto", "Helvetica", "Arial", "sans-serif" },
                 FontSize = "0.75rem",        // 12px
@@ -216,7 +216,7 @@ public class AccrediaTheme : MudTheme
                 LineHeight = "1.66",         // STRINGA non double!
                 LetterSpacing = "0.03333em"
             },
-            Overline = new BaseTypography
+            Overline = new OverlineTypography
             {
                 FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
                 FontSize = "0.75rem",        // 12px
