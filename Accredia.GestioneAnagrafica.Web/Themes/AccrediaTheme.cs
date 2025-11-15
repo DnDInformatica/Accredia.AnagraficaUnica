@@ -3,7 +3,7 @@ using MudBlazor;
 namespace Accredia.GestioneAnagrafica.Web.Themes;
 
 /// <summary>
-/// Tema personalizzato MudBlazor 8.14.x per Accredia
+/// Tema personalizzato MudBlazor 6.20.0 per Accredia
 /// Implementa la corporate identity ufficiale di Accredia
 /// </summary>
 public class AccrediaTheme : MudTheme
@@ -123,109 +123,9 @@ public class AccrediaTheme : MudTheme
             OverlayLight = "rgba(255, 255, 255, 0.15)",
         };
 
-        // Typography - Font ufficiali Accredia
-        // IMPORTANTE: In MudBlazor 8.14.x FontWeight e LineHeight sono stringhe!
-        Typography = new Typography
-        {
-            Default = new BaseTypography
-            {
-                FontFamily = new[] { "Open Sans", "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "1rem",           // 16px
-                FontWeight = "400",          // STRINGA non int!
-                LineHeight = "1.5",          // STRINGA non double!
-                LetterSpacing = "0.00938em"
-            },
-            H1 = new BaseTypography
-            {
-                FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "2.5rem",         // 40px
-                FontWeight = "700",          // STRINGA non int!
-                LineHeight = "1.2",          // STRINGA non double!
-                LetterSpacing = "-0.01562em"
-            },
-            H2 = new BaseTypography
-            {
-                FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "2rem",           // 32px
-                FontWeight = "700",          // STRINGA non int!
-                LineHeight = "1.3",          // STRINGA non double!
-                LetterSpacing = "-0.00833em"
-            },
-            H3 = new BaseTypography
-            {
-                FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "1.75rem",        // 28px
-                FontWeight = "600",          // STRINGA non int!
-                LineHeight = "1.4",          // STRINGA non double!
-                LetterSpacing = "0em"
-            },
-            H4 = new BaseTypography
-            {
-                FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "1.5rem",         // 24px
-                FontWeight = "600",          // STRINGA non int!
-                LineHeight = "1.4",          // STRINGA non double!
-                LetterSpacing = "0.00735em"
-            },
-            H5 = new BaseTypography
-            {
-                FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "1.25rem",        // 20px
-                FontWeight = "600",          // STRINGA non int!
-                LineHeight = "1.5",          // STRINGA non double!
-                LetterSpacing = "0em"
-            },
-            H6 = new BaseTypography
-            {
-                FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "1rem",           // 16px
-                FontWeight = "600",          // STRINGA non int!
-                LineHeight = "1.6",          // STRINGA non double!
-                LetterSpacing = "0.0075em"
-            },
-            Body1 = new BaseTypography
-            {
-                FontFamily = new[] { "Open Sans", "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "1rem",           // 16px
-                FontWeight = "400",          // STRINGA non int!
-                LineHeight = "1.5",          // STRINGA non double!
-                LetterSpacing = "0.00938em"
-            },
-            Body2 = new BaseTypography
-            {
-                FontFamily = new[] { "Open Sans", "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "0.875rem",       // 14px
-                FontWeight = "400",          // STRINGA non int!
-                LineHeight = "1.43",         // STRINGA non double!
-                LetterSpacing = "0.01071em"
-            },
-            Button = new BaseTypography
-            {
-                FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "0.875rem",       // 14px
-                FontWeight = "600",          // STRINGA non int!
-                LineHeight = "1.75",         // STRINGA non double!
-                LetterSpacing = "0.02857em",
-                TextTransform = "uppercase"
-            },
-            Caption = new BaseTypography
-            {
-                FontFamily = new[] { "Open Sans", "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "0.75rem",        // 12px
-                FontWeight = "400",          // STRINGA non int!
-                LineHeight = "1.66",         // STRINGA non double!
-                LetterSpacing = "0.03333em"
-            },
-            Overline = new BaseTypography
-            {
-                FontFamily = new[] { "Montserrat", "Roboto", "Helvetica", "Arial", "sans-serif" },
-                FontSize = "0.75rem",        // 12px
-                FontWeight = "600",          // STRINGA non int!
-                LineHeight = "2.66",         // STRINGA non double!
-                LetterSpacing = "0.08333em",
-                TextTransform = "uppercase"
-            }
-        };
+        // NOTE: Typography configuration is not supported in MudBlazor 6.20.0
+        // Font customization should be done via CSS instead
+        // Typography will use MudBlazor defaults for version 6.x
 
         // Layout Properties - Responsive Accredia
         LayoutProperties = new LayoutProperties
